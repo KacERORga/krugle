@@ -2,1182 +2,296 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Krugle — поиск</title>
+    <title>Krugle — неофициальный браузер</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        /* Переменные для светлой и тёмной темы */
-        :root {
-            --bg-gradient-light: linear-gradient(-45deg, #667eea, #764ba2, #6b8cff, #9f7aea);
-            --bg-gradient-dark: linear-gradient(-45deg, #0a0f1e, #1a1f30, #0f1425, #1e2438);
-            --container-bg-light: rgba(255, 255, 255, 0.95);
-            --container-bg-dark: rgba(10, 15, 30, 0.95);
-            --text-light: #ffffff;
-            --text-dark: #e0e0ff;
-            --gold-light: #ffd700;
-            --gold-dark: #ffb347;
-            --shadow-light: 0 30px 50px rgba(0, 0, 0, 0.3);
-            --shadow-dark: 0 30px 50px rgba(0, 0, 0, 0.7);
-            --border-light: 1px solid rgba(255, 255, 255, 0.3);
-            --border-dark: 1px solid rgba(255, 180, 0, 0.3);
+        html, body {
+            height: 100%;
         }
-
-        /* Светлая тема (по умолчанию) */
-        body.light-theme {
-            --bg-gradient: var(--bg-gradient-light);
-            --container-bg: var(--container-bg-light);
-            --text-primary: var(--text-light);
-            --gold: var(--gold-light);
-            --shadow: var(--shadow-light);
-            --border: var(--border-light);
-        }
-
-        /* Тёмная тема */
-        body.dark-theme {
-            --bg-gradient: var(--bg-gradient-dark);
-            --container-bg: var(--container-bg-dark);
-            --text-primary: var(--text-dark);
-            --gold: var(--gold-dark);
-            --shadow: var(--shadow-dark);
-            --border: var(--border-dark);
-        }
-        
         body {
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px;
-            position: relative;
-            background: var(--bg-gradient);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            transition: background 0.5s ease;
+            background: linear-gradient(145deg, #d9e2ec 0%, #c2d0de 100%);
+            padding: 16px;
         }
-        
-        /* Затемняющий слой для читаемости */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(8px);
-            z-index: 0;
-        }
-        
-        /* Плавающие элементы на фоне */
-        .floating-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-        
-        .floating-bg span {
-            position: absolute;
-            display: block;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 50%;
-            animation: float 6s linear infinite;
-            bottom: -100px;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-1000px) rotate(720deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px var(--gold), 0 0 10px var(--gold), 0 0 15px var(--gold); }
-            50% { box-shadow: 0 0 20px var(--gold), 0 0 30px var(--gold), 0 0 40px var(--gold); }
-            100% { box-shadow: 0 0 5px var(--gold), 0 0 10px var(--gold), 0 0 15px var(--gold); }
-        }
-        
-        @keyframes rainbow {
-            0% { color: #ff0000; }
-            14% { color: #ff7f00; }
-            28% { color: #ffff00; }
-            42% { color: #00ff00; }
-            57% { color: #0000ff; }
-            71% { color: #4b0082; }
-            85% { color: #8f00ff; }
-            100% { color: #ff0000; }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        @keyframes confetti {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        /* Переключатель темы */
-        .theme-switch {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            display: flex;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: var(--border);
-        }
-        
-        .theme-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-        
-        .theme-btn.light {
-            background: white;
-            color: #1a2b3c;
-        }
-        
-        .theme-btn.dark {
-            background: #1a1f30;
-            color: #ffd700;
-        }
-        
-        .theme-btn.active {
-            border-color: var(--gold);
-            transform: scale(1.1);
-            box-shadow: 0 0 15px var(--gold);
-        }
-        
         .container {
             width: 100%;
-            max-width: 600px;
-            background: var(--container-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 32px;
-            padding: 24px 20px;
-            box-shadow: var(--shadow);
-            border: var(--border);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            z-index: 10;
-            margin: 10px;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            padding: 30px 30px 25px 30px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        
-        /* Мобильная адаптация */
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px 15px;
-                border-radius: 28px;
-            }
-            
-            h1 {
-                font-size: 3rem !important;
-            }
-            
-            .greeting {
-                font-size: 1.2rem !important;
-            }
-            
-            .search-form input {
-                padding: 14px 18px !important;
-                font-size: 1rem !important;
-            }
-            
-            .search-form button {
-                padding: 0 20px !important;
-                font-size: 1rem !important;
-            }
-            
-            .quick-link {
-                padding: 12px 16px !important;
-                font-size: 1.1rem !important;
-                min-width: 120px !important;
-            }
-            
-            .results-frame {
-                height: 400px !important;
-            }
-            
-            .stats-container {
-                flex-direction: column !important;
-                gap: 10px !important;
-            }
-            
-            .stat-item {
-                width: 100% !important;
-            }
-            
-            .theme-switch {
-                top: 10px;
-                right: 10px;
-                padding: 5px;
-            }
-            
-            .theme-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-            }
-        }
-        
-        .container.admin-container {
-            transform: scale(1.02);
-            border: 3px solid var(--gold);
-            animation: glow 2s ease-in-out infinite;
-            background: var(--container-bg);
-        }
-        
         h1 {
-            font-size: 4rem;
+            font-size: 3.8rem;
             text-align: center;
-            color: var(--text-primary);
-            margin-bottom: 8px;
+            color: #1a2b3c;
+            margin-bottom: 5px;
             letter-spacing: -1px;
-            text-shadow: 3px 3px 0 #000000, 5px 5px 0 rgba(255, 215, 0, 0.3);
-            transition: all 0.5s;
-            font-weight: 800;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
         }
-        
-        h1.admin-title {
-            animation: rainbow 5s linear infinite;
-            text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(255, 215, 0, 0.5);
-        }
-        
         .greeting {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             text-align: center;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            border-bottom: 2px dashed rgba(255, 215, 0, 0.3);
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #a0b8cc;
             padding-bottom: 15px;
-            font-weight: 500;
-            transition: all 0.5s;
-            text-shadow: 2px 2px 0 #000000;
+            font-weight: 300;
         }
-        
         .greeting span {
-            font-weight: 800;
-            color: var(--gold);
-            background: rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+            color: #1e4d7c;
+            background: rgba(30, 77, 124, 0.1);
             padding: 4px 12px;
             border-radius: 40px;
-            transition: all 0.3s;
-            border: 1px solid var(--gold);
-            text-shadow: 1px 1px 0 #000;
         }
-        
-        .greeting.admin-greeting span {
-            background: linear-gradient(45deg, rgba(255, 215, 0, 0.8), rgba(255, 140, 0, 0.8));
-            color: #000;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-            border: 2px solid var(--gold);
-            text-shadow: none;
-            font-weight: 900;
-        }
-        
         .admin-badge {
-            background: linear-gradient(45deg, var(--gold), orange);
-            color: #000000;
-            font-weight: 900;
-            padding: 8px 20px;
+            background: gold;
+            color: #1a2b3c;
+            font-weight: bold;
+            padding: 6px 18px;
             border-radius: 40px;
             display: inline-block;
-            margin-top: 10px;
-            box-shadow: 0 4px 0 #8b6910;
-            border: 1px solid #fff;
-            text-shadow: none;
-            font-size: 1.1rem;
+            margin-top: 8px;
+            box-shadow: 0 4px 0 #b8860b;
         }
-        
-        /* Статистика времени */
-        .stats-container {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
+        .online-counter {
+            background: rgba(30, 77, 124, 0.1);
+            border: 2px solid #1e4d7c;
+            border-radius: 60px;
+            padding: 12px 24px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #1a2b3c;
+            width: auto;
         }
-        
-        .stat-item {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            border-radius: 30px;
-            padding: 12px 15px;
-            flex: 1;
-            text-align: center;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        .online-counter span {
+            background: #1e4d7c;
+            color: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            margin-left: 8px;
         }
-        
-        .stat-item:hover {
-            transform: translateY(-2px);
-            border-color: var(--gold);
-            background: rgba(0, 0, 0, 0.6);
+        .counter-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--gold);
-            margin-bottom: 5px;
-            font-weight: 600;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(255, 215, 0, 0.3);
-        }
-        
-        .stat-unit {
-            font-size: 0.9rem;
-            color: var(--gold);
-            margin-left: 5px;
-            font-weight: 600;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
         .search-form {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 20px;
         }
-        
         .search-form input {
             flex: 1;
-            padding: 18px 22px;
-            font-size: 1.2rem;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 16px 22px;
+            font-size: 1.1rem;
+            border: 2px solid #fff;
             border-radius: 60px;
-            background: rgba(255, 255, 255, 0.95);
-            outline: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            color: #000;
-            font-weight: 500;
-        }
-        
-        .search-form input:focus {
-            border-color: var(--gold);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
-            transform: scale(1.02);
             background: white;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
-        
-        .search-form input::placeholder {
-            color: #666;
-            font-weight: 400;
+        .search-form input:focus {
+            border-color: #1e4d7c;
+            box-shadow: 0 8px 20px rgba(30, 77, 124, 0.2);
+            transform: scale(1.02);
         }
-        
         .search-form button {
-            padding: 0 32px;
-            background: linear-gradient(45deg, #1e4d7c, #2c3e50);
+            padding: 0 28px;
+            background: #1e4d7c;
             color: white;
             border: none;
             border-radius: 60px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 0 #0f2c44;
             transition: all 0.1s;
-            text-shadow: 1px 1px 0 #000;
-            border: 1px solid rgba(255, 215, 0, 0.3);
         }
-        
         .search-form button:active {
             transform: translateY(4px);
             box-shadow: none;
         }
-        
         .quick-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 12px;
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
-        
         .quick-link {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            padding: 14px 20px;
+            background: white;
+            border: 2px solid rgba(30, 77, 124, 0.2);
+            padding: 12px 22px;
             border-radius: 60px;
             font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 500;
+            color: #1a2b3c;
             cursor: pointer;
-            box-shadow: 0 6px 0 #000;
+            box-shadow: 0 5px 0 #cbd6e2;
             transition: all 0.1s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             min-width: 120px;
             justify-content: center;
-            text-shadow: 1px 1px 0 #000;
         }
-        
         .quick-link:hover {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: var(--gold);
-            transform: translateY(-2px);
-            color: #fff;
+            background: #f0f7ff;
+            border-color: #1e4d7c;
         }
-        
         .quick-link:active {
-            transform: translateY(6px);
+            transform: translateY(5px);
             box-shadow: none;
         }
-        
         .results-frame {
             width: 100%;
-            height: 450px;
-            border: 3px solid rgba(255, 215, 0, 0.3);
+            height: 350px;
+            border: 3px solid white;
             border-radius: 30px;
             background: white;
-            margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.5s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: block;
         }
-        
-        .results-frame.admin-frame {
-            border: 3px solid var(--gold);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-        
-        #login-block {
+        /* Экран приветствия */
+        .welcome-screen, .name-screen {
             text-align: center;
-            animation: fadeIn 1s ease;
+            padding: 20px 10px;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .welcome-screen h2 {
+            font-size: 2.2rem;
+            color: #1a2b3c;
+            margin-bottom: 20px;
         }
-        
-        #login-block h2 {
-            font-size: 2.5rem;
-            color: var(--gold);
-            margin-bottom: 10px;
-            text-shadow: 3px 3px 0 #000, 5px 5px 0 rgba(0, 0, 0, 0.5);
-            font-weight: 900;
+        .welcome-screen p {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
-        
-        #login-block p {
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 0 #000;
-            font-weight: 500;
-        }
-        
-        #login-block input {
-            width: 100%;
-            padding: 16px 22px;
-            font-size: 1.1rem;
-            border: 3px solid rgba(255, 215, 0, 0.3);
-            border-radius: 60px;
-            margin-bottom: 15px;
-            outline: none;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            transition: all 0.3s;
-            color: #000;
-            font-weight: 500;
-        }
-        
-        #login-block input:focus {
-            border-color: var(--gold);
-            transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            background: white;
-        }
-        
-        #login-block input::placeholder {
-            color: #666;
-            font-weight: 400;
-        }
-        
-        #login-block input.admin-typing {
-            border-color: var(--gold);
-            animation: glow 1.5s ease-in-out infinite;
-            background: linear-gradient(45deg, #fff, #fff8e7);
-        }
-        
-        #login-block button {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(45deg, #1e4d7c, #2c3e50);
+        .welcome-screen button, .name-screen button {
+            padding: 16px 40px;
+            background: #1e4d7c;
             color: white;
             border: none;
             border-radius: 60px;
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             box-shadow: 0 6px 0 #0f2c44;
-            transition: all 0.1s;
-            position: relative;
-            overflow: hidden;
-            text-shadow: 2px 2px 0 #000;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.2s;
         }
-        
-        #login-block button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.5s;
-        }
-        
-        #login-block button:active {
+        .welcome-screen button:active, .name-screen button:active {
             transform: translateY(6px);
             box-shadow: none;
         }
-        
-        #login-block button:active::after {
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        #login-block button.admin-btn {
-            background: linear-gradient(45deg, var(--gold), orange, var(--gold));
-            background-size: 200% 200%;
-            animation: gradientBG 3s ease infinite;
-            color: #000;
-            box-shadow: 0 6px 0 #8b6910;
-            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
-            border: 1px solid #fff;
-            font-weight: 900;
-        }
-        
-        /* Стили для подсказок */
-        .special-message {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 16px;
+        .name-screen input {
+            width: 100%;
+            max-width: 400px;
+            padding: 18px 24px;
+            font-size: 1.2rem;
+            border: 3px solid #d0ddee;
             border-radius: 60px;
-            margin: 15px 0;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            animation: pulse 2s ease-in-out infinite;
-            flex-wrap: wrap;
-            border: 2px solid var(--gold);
-            text-shadow: 1px 1px 0 #000;
+            margin-bottom: 20px;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
         }
-        
-        .special-message span {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .name-screen input:focus {
+            border-color: #1e4d7c;
+            box-shadow: 0 0 0 4px rgba(30, 77, 124, 0.2);
+            transform: scale(1.02);
         }
-        
-        .special-message .highlight {
-            background: var(--gold);
-            color: #000;
-            font-weight: 900;
-            border: 1px solid #fff;
-            text-shadow: none;
+        /* Анимации появления */
+        @keyframes fadeSlideIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
-        
-        .example-names {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin: 15px 0;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 60px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+        .fade-slide-in {
+            animation: fadeSlideIn 0.5s ease forwards;
         }
-        
-        .name-example {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-            text-shadow: 1px 1px 0 #000;
-            font-weight: 600;
-        }
-        
-        .name-example:hover {
-            background: #1e4d7c;
-            color: white;
-            transform: scale(1.05);
-            border-color: var(--gold);
-        }
-        
-        .name-example.special {
-            background: linear-gradient(45deg, var(--gold), orange);
-            color: #000;
-            border: 2px solid var(--gold);
-            font-weight: 900;
-            text-shadow: none;
-        }
-        
-        .name-example.special:hover {
-            background: linear-gradient(45deg, orange, var(--gold));
-            transform: scale(1.1);
-        }
-        
-        .name-example.meme {
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            color: #000;
-            border: 2px solid #ff9f43;
-            font-weight: 900;
-            text-shadow: none;
-        }
-        
-        .hint-text {
-            font-size: 0.9rem;
-            color: var(--gold);
-            margin-top: 10px;
-            text-shadow: 1px 1px 0 #000;
-            font-weight: 500;
-        }
-        
-        .forgot-password {
-            font-size: 1rem;
-            color: var(--gold);
-            margin: 10px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 12px;
-            border-radius: 30px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            text-shadow: 1px 1px 0 #000;
-            font-weight: 600;
-        }
-        
-        .forgot-password:hover {
-            color: #fff;
-            background: rgba(255, 215, 0, 0.2);
-            border-color: var(--gold);
-        }
-        
         .hidden {
-            display: none;
+            display: none !important;
         }
-        
         .note {
-            margin-top: 15px;
+            margin-top: 10px;
             font-size: 0.9rem;
-            color: var(--gold);
+            color: #4a6f8c;
             text-align: center;
-            text-shadow: 1px 1px 0 #000;
-            font-weight: 500;
         }
-        
         .footer {
-            margin-top: 20px;
+            margin-top: 15px;
             font-size: 1rem;
             text-align: center;
-            padding-top: 15px;
-            border-top: 2px dashed rgba(255, 215, 0, 0.3);
+            padding-top: 10px;
         }
-        
         .footer a {
-            color: var(--gold);
+            color: #1e4d7c;
             text-decoration: none;
-            margin: 0 12px;
-            font-weight: 700;
-            transition: all 0.3s;
-            text-shadow: 1px 1px 0 #000;
+            margin: 0 15px;
+            font-weight: 500;
         }
-        
-        .footer a:hover {
-            color: var(--text-primary);
-            transform: scale(1.1);
-        }
-        
         .admin-panel {
-            background: rgba(0, 0, 0, 0.7);
-            color: var(--text-primary);
+            background: #1e2b3a;
+            color: white;
             padding: 20px;
             border-radius: 30px;
             text-align: center;
-            margin: 15px 0;
-            border: 3px solid var(--gold);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 3px solid gold;
         }
-        
         .admin-panel h2 {
-            color: var(--gold);
+            color: gold;
             font-size: 1.8rem;
             margin-bottom: 10px;
-            animation: rainbow 5s linear infinite;
-            text-shadow: 2px 2px 0 #000;
         }
-        
         .admin-panel p {
-            color: var(--text-primary);
             font-size: 1.1rem;
-            text-shadow: 1px 1px 0 #000;
+            color: #ddd;
         }
-        
-        .online-users {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            padding: 12px;
-            margin: 15px 0;
-            border: 2px solid var(--gold);
-        }
-        
-        .online-users h3 {
-            color: var(--gold);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .users-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-        }
-        
-        .user-badge {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 6px 12px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.3s;
-            text-shadow: 1px 1px 0 #000;
-            font-weight: 500;
-        }
-        
-        .user-badge.online {
-            background: var(--gold);
-            color: #000;
-            font-weight: 900;
-            border: 1px solid #fff;
-            text-shadow: none;
-        }
-        
-        /* История поиска */
-        .history-section {
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        .history-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 30px;
-            background: rgba(0, 0, 0, 0.4);
-            transition: all 0.3s;
-            color: var(--gold);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-        
-        .history-header:hover {
-            background: rgba(255, 215, 0, 0.1);
-            transform: scale(1.02);
-            border-color: var(--gold);
-        }
-        
-        .history-header span {
-            font-size: 1rem;
-            color: var(--gold);
-            font-weight: 600;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .history-arrow {
-            font-size: 1rem;
-            transition: transform 0.3s;
-            color: var(--gold);
-        }
-        
-        .history-arrow.rotated {
-            transform: rotate(180deg);
-        }
-        
-        .history-container {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 30px;
-            margin-top: 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--gold);
-        }
-        
-        .history-container.show {
-            max-height: 250px;
-            margin-top: 10px;
-            overflow-y: auto;
-        }
-        
-        .history-list {
-            list-style: none;
-            padding: 10px;
-        }
-        
-        .history-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .history-item:hover {
-            background: rgba(255, 215, 0, 0.1);
-            transform: translateX(5px);
-        }
-        
-        .history-query {
-            font-size: 1rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .history-time {
-            font-size: 0.8rem;
-            color: var(--gold);
-        }
-        
-        .clear-history {
-            background: none;
-            border: 2px solid #ff6b6b;
-            color: #ff6b6b;
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 8px 15px;
-            border-radius: 20px;
-            margin: 5px auto;
-            display: block;
-            transition: all 0.2s;
-            font-weight: 600;
-        }
-        
-        .clear-history:hover {
-            background: #ff6b6b;
-            color: #000;
-            transform: scale(1.05);
-        }
-        
-        /* Конфетти */
-        .confetti {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--gold);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: confetti 3s ease-out forwards;
-        }
-        
-        /* Мемные вопросы */
-        .meme-question {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            border-radius: 30px;
-            margin: 15px 0;
-            border: 3px solid var(--gold);
-        }
-        
-        .meme-question h3 {
-            color: var(--gold);
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .meme-question p {
-            color: var(--text-primary);
-            font-size: 1.2rem;
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .question-option {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px 16px;
-            border-radius: 30px;
-            margin: 8px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-primary);
-            text-shadow: 1px 1px 0 #000;
-        }
-        
-        .question-option:hover {
+        .admin-counter {
             background: rgba(255, 215, 0, 0.2);
-            border-color: var(--gold);
-        }
-        
-        .question-option.selected {
-            background: var(--gold);
-            color: #000;
-            font-weight: 900;
-            border-color: #fff;
-            text-shadow: none;
-        }
-        
-        .question-nav {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin: 15px 0;
-        }
-        
-        .question-dot {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        .question-dot.active {
-            background: var(--gold);
-            transform: scale(1.1);
-            color: #000;
-        }
-        
-        .question-dot.completed {
-            background: #2ecc71;
-            border-color: #27ae60;
+            border: 2px solid gold;
             color: white;
         }
-        
-        #check-answers-btn {
-            margin-top: 15px;
-            background: linear-gradient(45deg, #2ecc71, #27ae60);
-            box-shadow: 0 4px 0 #1e8449;
-            color: white;
-            border: none;
-            border-radius: 60px;
-            padding: 15px;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.1s;
-            text-shadow: 1px 1px 0 #000;
-            border: 1px solid #fff;
-        }
-        
-        #check-answers-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
+        .admin-counter span {
+            background: gold;
+            color: #1a2b3c;
         }
     </style>
 </head>
-<body class="light-theme">
-    <!-- Переключатель темы -->
-    <div class="theme-switch">
-        <div class="theme-btn light active" onclick="setTheme('light')" title="Светлая тема">☀️</div>
-        <div class="theme-btn dark" onclick="setTheme('dark')" title="Тёмная тема">🌙</div>
-    </div>
-
-    <!-- Плавающие элементы на фоне -->
-    <div class="floating-bg" id="floating-bg"></div>
-
+<body>
     <div class="container" id="app">
-        <!-- Блок входа -->
-        <div id="login-block">
-            <h2>🔐 Krugle</h2>
-            <p>Введите имя для входа</p>
-            
-            <!-- Специальное сообщение для Хафиза -->
-            <div class="special-message">
-                🎁 <strong>Специально для Хафиза:</strong>
-                <span>почта и регистрация не нужна</span>
-                <span class="highlight">⚡ Просто введи имя ⚡</span>
-            </div>
-            
-            <!-- Мемные примеры имён -->
-            <div class="example-names">
-                <span class="name-example meme" data-name="Андрей228">🎮 Андрей228</span>
-                <span class="name-example meme" data-name="ГенаИнженер">🔧 ГенаИнженер</span>
-                <span class="name-example meme" data-name="ДядяВася">👴 ДядяВася</span>
-                <span class="name-example meme" data-name="КотЭ">🐱 КотЭ</span>
-                <span class="name-example meme" data-name="ЧелСкинхед">🤘 ЧелСкинхед</span>
-                <span class="name-example meme" data-name="ХачУлыбнись">😎 ХачУлыбнись</span>
-                <span class="name-example meme" data-name="БратЗаБрата">🤝 БратЗаБрата</span>
-                <span class="name-example special" data-name="KacERORga">👑 KacERORga</span>
-            </div>
-            
-            <input type="text" id="username-input" placeholder="например, Андрей228" autofocus>
-            
-            <!-- Поле для пароля (появляется при попытке входа как KacERORga) -->
-            <div id="password-field" class="hidden">
-                <input type="password" id="password-input" placeholder="🔑 Введите пароль администратора">
-                
-                <!-- Кнопка "Забыли пароль?" -->
-                <div class="forgot-password" id="forgot-password-btn">
-                    🤔 Забыли пароль? Ответь на мемные вопросы
-                </div>
-            </div>
-            
-            <!-- Контейнер для мемных вопросов -->
-            <div id="meme-questions-container" class="hidden">
-                <div class="meme-question" id="question-1">
-                    <h3>Вопрос №1</h3>
-                    <p style="font-size: 1.2rem; margin-bottom: 10px;">🏠 Кто проживает на дне океана?</p>
-                    
-                    <div class="question-option" data-question="1" data-answer="губка боб">
-                        <span>🧽</span> Губка Боб
-                    </div>
-                    <div class="question-option" data-question="1" data-answer="спанч боб">
-                        <span>🟨</span> Спанч Боб
-                    </div>
-                    <div class="question-option" data-question="1" data-answer="патрик">
-                        <span>⭐</span> Патрик
-                    </div>
-                </div>
-                
-                <div class="meme-question hidden" id="question-2">
-                    <h3>Вопрос №2</h3>
-                    <p style="font-size: 1.2rem; margin-bottom: 10px;">🧮 Сколько будет 2+2?</p>
-                    
-                    <div class="question-option" data-question="2" data-answer="4">
-                        <span>4️⃣</span> 4
-                    </div>
-                    <div class="question-option" data-question="2" data-answer="22">
-                        <span>2️⃣2️⃣</span> 22
-                    </div>
-                    <div class="question-option" data-question="2" data-answer="5">
-                        <span>5️⃣</span> 5
-                    </div>
-                </div>
-                
-                <div class="meme-question hidden" id="question-3">
-                    <h3>Вопрос №3</h3>
-                    <p style="font-size: 1.2rem; margin-bottom: 10px;">🗣️ Скажи триста</p>
-                    
-                    <div class="question-option" data-question="3" data-answer="триста">
-                        <span>3️⃣0️⃣0️⃣</span> Триста
-                    </div>
-                    <div class="question-option" data-question="3" data-answer="300">
-                        <span>🔢</span> 300
-                    </div>
-                    <div class="question-option" data-question="3" data-answer="отсоси у тракториста">
-                        <span>🚜</span> Отсоси у тракториста
-                    </div>
-                </div>
-                
-                <!-- Навигация по вопросам -->
-                <div class="question-nav">
-                    <div class="question-dot active" data-question="1">1</div>
-                    <div class="question-dot" data-question="2">2</div>
-                    <div class="question-dot" data-question="3">3</div>
-                </div>
-                
-                <!-- Кнопка проверки -->
-                <button id="check-answers-btn">✅ Проверить ответы</button>
-            </div>
-            
-            <!-- Подсказка -->
-            <div class="hint-text">
-                💡 Можно использовать любое имя, цифры тоже подойдут
-            </div>
-            
-            <button id="enter-btn">✨ Войти ✨</button>
+        <!-- Экран приветствия (первый шаг) -->
+        <div id="welcome-block" class="welcome-screen">
+            <h2>👋 Привет!</h2>
+            <p>Это <strong>Kroogle-Кругл</strong> —<br>неофициальный браузер от колобанги</p>
+            <button id="next-btn">✨ Далее ✨</button>
+        </div>
+
+        <!-- Экран ввода имени (второй шаг) -->
+        <div id="name-block" class="name-screen hidden">
+            <h2>🔐 Введите ваше имя</h2>
+            <input type="text" id="username-input" placeholder="например, Александр" autofocus>
+            <button id="enter-btn">🚪 Войти</button>
         </div>
 
         <!-- Блок поиска (обычный пользователь) -->
@@ -1185,17 +299,9 @@
             <h1>🔍 Krugle</h1>
             <div class="greeting" id="greeting"></div>
             
-            <!-- Статистика времени -->
-            <div class="stats-container">
-                <div class="stat-item">
-                    <div class="stat-label">⏱️ За этот заход</div>
-                    <div class="stat-value" id="session-minutes">0</div>
-                    <span class="stat-unit">мин</span>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">📊 Всего</div>
-                    <div class="stat-value" id="total-minutes">0</div>
-                    <span class="stat-unit">мин</span>
+            <div class="counter-container">
+                <div class="online-counter">
+                    👥 Сейчас на сайте: <span id="online-count">0</span>
                 </div>
             </div>
             
@@ -1210,47 +316,24 @@
                 <div class="quick-link" data-query="Minecraft">⛏️ Майнкрафт</div>
             </div>
 
-            <!-- История поиска -->
-            <div class="history-section">
-                <div class="history-header" id="history-header">
-                    <span>📜 История поиска</span>
-                    <span class="history-arrow" id="history-arrow">▼</span>
-                </div>
-                <div class="history-container" id="history-container">
-                    <ul class="history-list" id="history-list"></ul>
-                    <button class="clear-history" id="clear-history">🗑️ Очистить историю</button>
-                </div>
-            </div>
-
             <iframe id="search-iframe" class="results-frame" src="about:blank"></iframe>
 
-            <div class="note">
-                ⚡ Результаты открываются прямо здесь
-            </div>
             <div class="footer">
                 <a href="#" id="logout-link">🚪 Сменить имя</a>
             </div>
         </div>
 
-        <!-- Секретная админка для KacERORga -->
+        <!-- Секретная админка для избранных -->
         <div id="admin-block" class="hidden">
-            <h1 class="admin-title">👑 Krugle Admin</h1>
-            <div class="greeting admin-greeting">
+            <h1>👑 Krugle Admin</h1>
+            <div class="greeting">
                 <span id="admin-greeting"></span>
                 <div class="admin-badge">⚡ Создатель ⚡</div>
             </div>
             
-            <!-- Статистика времени для админа -->
-            <div class="stats-container">
-                <div class="stat-item">
-                    <div class="stat-label">⏱️ За этот заход</div>
-                    <div class="stat-value" id="admin-session-minutes">0</div>
-                    <span class="stat-unit">мин</span>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">📊 Всего</div>
-                    <div class="stat-value" id="admin-total-minutes">0</div>
-                    <span class="stat-unit">мин</span>
+            <div class="counter-container">
+                <div class="online-counter admin-counter">
+                    👑 Онлайн: <span id="admin-online-count">0</span>
                 </div>
             </div>
             
@@ -1258,15 +341,6 @@
                 <h2>🎁 Подарок от KacERORga</h2>
                 <p>Добро пожаловать в тайную админку.</p>
                 <p>Секретные функции и всё, что захочешь.</p>
-                
-                <!-- Счётчик онлайн пользователей -->
-                <div class="online-users">
-                    <h3>👥 Сейчас на сайте</h3>
-                    <div class="users-list" id="users-list"></div>
-                    <p style="margin-top: 8px; color: #aaa; font-size: 0.8rem;" id="online-count"></p>
-                </div>
-                
-                <p style="margin-top: 15px; font-size: 1.8rem;">⭐ 🚀 🌟</p>
             </div>
 
             <div class="search-form">
@@ -1280,18 +354,6 @@
                 <div class="quick-link" data-query="Minecraft">⛏️ Майнкрафт</div>
             </div>
 
-            <!-- История поиска для админа -->
-            <div class="history-section">
-                <div class="history-header" id="admin-history-header">
-                    <span>📜 История поиска</span>
-                    <span class="history-arrow" id="admin-history-arrow">▼</span>
-                </div>
-                <div class="history-container" id="admin-history-container">
-                    <ul class="history-list" id="admin-history-list"></ul>
-                    <button class="clear-history" id="admin-clear-history">🗑️ Очистить историю</button>
-                </div>
-            </div>
-
             <iframe id="admin-iframe" class="results-frame" src="about:blank"></iframe>
 
             <div class="footer">
@@ -1300,60 +362,35 @@
         </div>
     </div>
 
-    <script>
-        // Функция для переключения темы
-        function setTheme(theme) {
-            const body = document.body;
-            const lightBtn = document.querySelector('.theme-btn.light');
-            const darkBtn = document.querySelector('.theme-btn.dark');
-            
-            if (theme === 'light') {
-                body.classList.remove('dark-theme');
-                body.classList.add('light-theme');
-                lightBtn.classList.add('active');
-                darkBtn.classList.remove('active');
-                localStorage.setItem('krugle_theme', 'light');
-            } else {
-                body.classList.remove('light-theme');
-                body.classList.add('dark-theme');
-                darkBtn.classList.add('active');
-                lightBtn.classList.remove('active');
-                localStorage.setItem('krugle_theme', 'dark');
-            }
+    <!-- КОД СЧЁТЧИКА -->
+    <script type="text/javascript">
+    (function() {
+        function updateCounters() {
+            const randomCount = Math.floor(Math.random() * 5) + 1;
+            const normalCounter = document.getElementById('online-count');
+            const adminCounter = document.getElementById('admin-online-count');
+            if (normalCounter) normalCounter.textContent = randomCount;
+            if (adminCounter) adminCounter.textContent = randomCount + 2;
         }
+        updateCounters();
+        setInterval(updateCounters, 30000);
+    })();
+    </script>
 
+    <script>
         (function() {
-            // Загружаем сохранённую тему
-            const savedTheme = localStorage.getItem('krugle_theme') || 'light';
-            setTheme(savedTheme);
-            
-            // Создаем плавающие элементы на фоне
-            const floatingBg = document.getElementById('floating-bg');
-            for (let i = 0; i < 20; i++) {
-                const span = document.createElement('span');
-                span.style.left = Math.random() * 100 + '%';
-                span.style.width = Math.random() * 30 + 10 + 'px';
-                span.style.height = span.style.width;
-                span.style.animationDuration = Math.random() * 10 + 10 + 's';
-                span.style.animationDelay = Math.random() * 5 + 's';
-                span.style.background = `rgba(255, 215, 0, ${Math.random() * 0.2})`;
-                floatingBg.appendChild(span);
-            }
+            // ⭐ СПИСОК АДМИНОВ
+            const adminUsers = ['KacERORga', 'Admin', 'Vlad', 'Masha'];
 
-            const loginBlock = document.getElementById('login-block');
+            // Элементы
+            const welcomeBlock = document.getElementById('welcome-block');
+            const nameBlock = document.getElementById('name-block');
             const searchBlock = document.getElementById('search-block');
             const adminBlock = document.getElementById('admin-block');
             
-            const usernameInput = document.getElementById('username-input');
-            const passwordInput = document.getElementById('password-input');
-            const passwordField = document.getElementById('password-field');
+            const nextBtn = document.getElementById('next-btn');
             const enterBtn = document.getElementById('enter-btn');
-            const forgotPasswordBtn = document.getElementById('forgot-password-btn');
-            
-            // Элементы для мемных вопросов
-            const memeQuestionsContainer = document.getElementById('meme-questions-container');
-            const questionDots = document.querySelectorAll('.question-dot');
-            const checkAnswersBtn = document.getElementById('check-answers-btn');
+            const usernameInput = document.getElementById('username-input');
             
             // Обычный поиск
             const searchInput = document.getElementById('search-input');
@@ -1371,523 +408,92 @@
             const logoutLink = document.getElementById('logout-link');
             const adminLogoutLink = document.getElementById('admin-logout-link');
 
-            // Элементы истории
-            const historyHeader = document.getElementById('history-header');
-            const historyContainer = document.getElementById('history-container');
-            const historyArrow = document.getElementById('history-arrow');
-            const historyList = document.getElementById('history-list');
-            const clearHistoryBtn = document.getElementById('clear-history');
-            
-            // Элементы истории для админа
-            const adminHistoryHeader = document.getElementById('admin-history-header');
-            const adminHistoryContainer = document.getElementById('admin-history-container');
-            const adminHistoryArrow = document.getElementById('admin-history-arrow');
-            const adminHistoryList = document.getElementById('admin-history-list');
-            const adminClearHistoryBtn = document.getElementById('admin-clear-history');
-            
-            // Элементы для онлайн пользователей
-            const usersList = document.getElementById('users-list');
-            const onlineCount = document.getElementById('online-count');
-            
-            // Элементы для статистики времени
-            const sessionMinutesEl = document.getElementById('session-minutes');
-            const totalMinutesEl = document.getElementById('total-minutes');
-            const adminSessionMinutesEl = document.getElementById('admin-session-minutes');
-            const adminTotalMinutesEl = document.getElementById('admin-total-minutes');
-
-            // Примеры имён для клика
-            const nameExamples = document.querySelectorAll('.name-example');
-
-            // Хранилище для онлайн пользователей и статистики
-            let onlineUsers = new Map();
-            let currentUser = null;
-            
-            // Статистика времени
-            let sessionStartTime = null;
-            let totalTime = JSON.parse(localStorage.getItem('krugle_total_time')) || {};
-            
-            // Загружаем историю из localStorage
-            let searchHistory = JSON.parse(localStorage.getItem('krugle_history')) || [];
-
-            // Хранилище ответов на вопросы
-            let answers = {
-                1: null,
-                2: null,
-                3: null
-            };
-
-            // Функция для обновления статистики времени
-            function updateTimeStats() {
-                if (!currentUser) return;
-                
-                const now = Date.now();
-                
-                // Время за этот заход
-                if (sessionStartTime) {
-                    const sessionMinutes = Math.floor((now - sessionStartTime) / 60000);
-                    
-                    if (!adminBlock.classList.contains('hidden')) {
-                        if (adminSessionMinutesEl) {
-                            adminSessionMinutesEl.textContent = sessionMinutes;
-                        }
-                    } else {
-                        if (sessionMinutesEl) {
-                            sessionMinutesEl.textContent = sessionMinutes;
-                        }
-                    }
-                }
-                
-                // Общее время
-                const userTotal = totalTime[currentUser] || 0;
-                const totalMinutes = Math.floor(userTotal / 60000);
-                
-                if (!adminBlock.classList.contains('hidden')) {
-                    if (adminTotalMinutesEl) {
-                        adminTotalMinutesEl.textContent = totalMinutes;
-                    }
-                } else {
-                    if (totalMinutesEl) {
-                        totalMinutesEl.textContent = totalMinutes;
-                    }
-                }
-            }
-
-            // Функция для сохранения общего времени
-            function saveTotalTime() {
-                localStorage.setItem('krugle_total_time', JSON.stringify(totalTime));
-            }
-
-            // Функция для создания конфетти
-            function createConfetti() {
-                for (let i = 0; i < 30; i++) {
-                    setTimeout(() => {
-                        const confetti = document.createElement('div');
-                        confetti.className = 'confetti';
-                        confetti.style.left = Math.random() * 100 + '%';
-                        confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                        confetti.style.width = Math.random() * 8 + 4 + 'px';
-                        confetti.style.height = confetti.style.width;
-                        confetti.style.animationDuration = Math.random() * 2 + 2 + 's';
-                        document.body.appendChild(confetti);
-                        
-                        setTimeout(() => confetti.remove(), 3000);
-                    }, i * 50);
-                }
-            }
-
-            // Эффект для админа при вводе
-            function setupAdminTypingEffect() {
-                usernameInput.classList.add('admin-typing');
-                enterBtn.classList.add('admin-btn');
-                
-                const container = document.querySelector('.container');
-                container.classList.add('admin-container');
-                
-                passwordField.classList.remove('hidden');
-                passwordInput.focus();
-            }
-
-            // Сброс эффектов
-            function resetTypingEffects() {
-                usernameInput.classList.remove('admin-typing');
-                enterBtn.classList.remove('admin-btn');
-                document.querySelector('.container')?.classList.remove('admin-container');
-                passwordField.classList.add('hidden');
-                memeQuestionsContainer.classList.add('hidden');
-                passwordInput.value = '';
-                
-                answers = {1: null, 2: null, 3: null};
-                document.querySelectorAll('.question-option').forEach(opt => opt.classList.remove('selected'));
-            }
-
-            // Переключение между вопросами
-            function showQuestion(num) {
-                document.querySelectorAll('.meme-question').forEach(q => q.classList.add('hidden'));
-                document.getElementById(`question-${num}`).classList.remove('hidden');
-                
-                questionDots.forEach(dot => {
-                    dot.classList.remove('active');
-                    if (dot.dataset.question == num) {
-                        dot.classList.add('active');
-                    }
-                });
-            }
-
-            // Обработчик клика по вариантам ответов
-            document.querySelectorAll('.question-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const questionNum = this.dataset.question;
-                    const answer = this.dataset.answer;
-                    
-                    document.querySelectorAll(`.question-option[data-question="${questionNum}"]`).forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    
-                    this.classList.add('selected');
-                    
-                    answers[questionNum] = answer;
-                    
-                    questionDots.forEach(dot => {
-                        if (dot.dataset.question == questionNum && answers[questionNum]) {
-                            dot.classList.add('completed');
-                        }
-                    });
-                });
-            });
-
-            // Навигация по точкам
-            questionDots.forEach(dot => {
-                dot.addEventListener('click', function() {
-                    showQuestion(this.dataset.question);
-                });
-            });
-
-            // Проверка ответов
-            function checkAnswers() {
-                const q1Correct = answers[1] === 'губка боб' || answers[1] === 'спанч боб';
-                const q2Correct = answers[2] === '22';
-                const q3Correct = answers[3] === 'отсоси у тракториста';
-                
-                if (q1Correct && q2Correct && q3Correct) {
-                    alert('🎉 Молодец! Знаешь мемы! Входи');
-                    
-                    createConfetti();
-                    
-                    const name = usernameInput.value.trim();
-                    localStorage.setItem('krugle_user', name);
-                    currentUser = name;
-                    onlineUsers.set(name, Date.now());
-                    
-                    // Сохраняем время начала сессии
-                    sessionStartTime = Date.now();
-                    
-                    showAdmin(name);
-                } else {
-                    let message = '❌ Не все ответы правильные!\n';
-                    if (!q1Correct) message += '❌ Вопрос 1: Кто живёт на дне?\n';
-                    if (!q2Correct) message += '❌ Вопрос 2: Сколько будет 2+2? (мемный ответ)\n';
-                    if (!q3Correct) message += '❌ Вопрос 3: Скажи триста...\n';
-                    
-                    alert(message);
-                }
-            }
-
-            // Обработчик ввода для анимаций
-            usernameInput.addEventListener('input', function(e) {
-                const value = e.target.value;
-                
-                if (value === 'KacERORga') {
-                    setupAdminTypingEffect();
-                } else {
-                    resetTypingEffects();
-                }
-            });
-
-            // Клик по примеру имени
-            nameExamples.forEach(example => {
-                example.addEventListener('click', function() {
-                    const name = this.dataset.name;
-                    usernameInput.value = name;
-                    
-                    if (name === 'KacERORga') {
-                        setupAdminTypingEffect();
-                    } else {
-                        resetTypingEffects();
-                    }
-                    
-                    usernameInput.style.transform = 'scale(1.02)';
-                    setTimeout(() => usernameInput.style.transform = '', 200);
-                });
-            });
-
-            // Кнопка "Забыли пароль?" - показываем мемные вопросы
-            forgotPasswordBtn.addEventListener('click', function() {
-                passwordField.classList.add('hidden');
-                memeQuestionsContainer.classList.remove('hidden');
-                showQuestion(1);
-                enterBtn.textContent = '📝 Ответить на вопросы';
-                enterBtn.classList.add('code-btn');
-            });
-
-            // Кнопка проверки ответов
-            checkAnswersBtn.addEventListener('click', checkAnswers);
-
-            // Сохраняем историю
-            function saveHistory() {
-                localStorage.setItem('krugle_history', JSON.stringify(searchHistory));
-            }
-
-            // Добавляем запрос в историю
-            function addToHistory(query) {
-                if (!query || !query.trim()) return;
-                
-                const timestamp = new Date().toLocaleTimeString('ru-RU', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                });
-                
-                searchHistory.unshift({
-                    query: query,
-                    time: timestamp,
-                    fullTime: new Date().toISOString()
-                });
-                
-                if (searchHistory.length > 20) {
-                    searchHistory.pop();
-                }
-                
-                saveHistory();
-                updateHistoryDisplay();
-                updateAdminHistoryDisplay();
-            }
-
-            // Очистить историю
-            function clearHistory() {
-                searchHistory = [];
-                saveHistory();
-                updateHistoryDisplay();
-                updateAdminHistoryDisplay();
-            }
-
-            // Обновить отображение истории
-            function updateHistoryDisplay() {
-                if (!historyList) return;
-                
-                historyList.innerHTML = '';
-                
-                if (searchHistory.length === 0) {
-                    const emptyItem = document.createElement('li');
-                    emptyItem.className = 'history-item';
-                    emptyItem.innerHTML = '<span class="history-query">История пуста</span>';
-                    historyList.appendChild(emptyItem);
-                } else {
-                    searchHistory.forEach(item => {
-                        const li = document.createElement('li');
-                        li.className = 'history-item';
-                        li.innerHTML = `
-                            <span class="history-query">${item.query}</span>
-                            <span class="history-time">${item.time}</span>
-                        `;
-                        li.addEventListener('click', () => {
-                            searchInput.value = item.query;
-                            searchInIframe(searchIframe, item.query);
-                        });
-                        historyList.appendChild(li);
-                    });
-                }
-            }
-
-            // Обновить отображение истории для админа
-            function updateAdminHistoryDisplay() {
-                if (!adminHistoryList) return;
-                
-                adminHistoryList.innerHTML = '';
-                
-                if (searchHistory.length === 0) {
-                    const emptyItem = document.createElement('li');
-                    emptyItem.className = 'history-item';
-                    emptyItem.innerHTML = '<span class="history-query">История пуста</span>';
-                    adminHistoryList.appendChild(emptyItem);
-                } else {
-                    searchHistory.forEach(item => {
-                        const li = document.createElement('li');
-                        li.className = 'history-item';
-                        li.innerHTML = `
-                            <span class="history-query">${item.query}</span>
-                            <span class="history-time">${item.time}</span>
-                        `;
-                        li.addEventListener('click', () => {
-                            adminSearchInput.value = item.query;
-                            searchInIframe(adminIframe, item.query);
-                        });
-                        adminHistoryList.appendChild(li);
-                    });
-                }
-            }
-
-            // Обновить список онлайн пользователей
-            function updateOnlineUsers() {
-                if (!usersList || !onlineCount) return;
-                
-                const now = Date.now();
-                for (let [name, lastSeen] of onlineUsers.entries()) {
-                    if (now - lastSeen > 120000) {
-                        onlineUsers.delete(name);
-                    }
-                }
-                
-                if (currentUser) {
-                    onlineUsers.set(currentUser, now);
-                }
-                
-                usersList.innerHTML = '';
-                const users = Array.from(onlineUsers.keys());
-                
-                users.forEach(name => {
-                    const badge = document.createElement('span');
-                    badge.className = `user-badge ${name === 'KacERORga' ? 'online' : ''}`;
-                    badge.textContent = name;
-                    usersList.appendChild(badge);
-                });
-                
-                onlineCount.textContent = `Всего: ${users.length} пользователей онлайн`;
-            }
-
-            setInterval(updateOnlineUsers, 10000);
-
-            // Функция поиска в iframe
-            function searchInIframe(iframe, query) {
-                if (!query.trim()) return;
-                iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&igu=1';
-                addToHistory(query);
-                
-                if (currentUser === 'KacERORga') {
-                    iframe.classList.add('admin-frame');
-                    setTimeout(() => iframe.classList.remove('admin-frame'), 500);
-                }
-            }
-
+            // Проверка сохранённого имени
             const savedName = localStorage.getItem('krugle_user');
             if (savedName) {
-                currentUser = savedName;
-                onlineUsers.set(currentUser, Date.now());
-                
-                if (savedName === 'KacERORga') {
+                // Сразу переходим к соответствующему интерфейсу
+                if (adminUsers.includes(savedName)) {
                     showAdmin(savedName);
                 } else {
                     showSearch(savedName);
                 }
             } else {
-                showLogin();
+                // Показываем приветствие
+                showWelcome();
             }
 
-            function showLogin() {
-                loginBlock.classList.remove('hidden');
+            function showWelcome() {
+                welcomeBlock.classList.remove('hidden');
+                nameBlock.classList.add('hidden');
                 searchBlock.classList.add('hidden');
                 adminBlock.classList.add('hidden');
+                // Добавляем анимацию появления
+                welcomeBlock.classList.add('fade-slide-in');
+            }
+
+            function showNameInput() {
+                welcomeBlock.classList.add('hidden');
+                nameBlock.classList.remove('hidden');
+                searchBlock.classList.add('hidden');
+                adminBlock.classList.add('hidden');
+                nameBlock.classList.add('fade-slide-in');
                 usernameInput.focus();
-                resetTypingEffects();
             }
 
             function showSearch(name) {
-                currentUser = name;
-                onlineUsers.set(name, Date.now());
-                
-                // Сохраняем время начала сессии
-                sessionStartTime = Date.now();
-                
-                loginBlock.classList.add('hidden');
+                welcomeBlock.classList.add('hidden');
+                nameBlock.classList.add('hidden');
                 searchBlock.classList.remove('hidden');
                 adminBlock.classList.add('hidden');
                 greeting.innerHTML = `С возвращением, <span>${name}</span>!`;
                 searchInput.focus();
                 searchIframe.src = 'about:blank';
-                
-                updateHistoryDisplay();
-                updateTimeStats();
-                
-                resetTypingEffects();
             }
 
             function showAdmin(name) {
-                currentUser = name;
-                onlineUsers.set(name, Date.now());
-                
-                // Сохраняем время начала сессии
-                sessionStartTime = Date.now();
-                
-                loginBlock.classList.add('hidden');
+                welcomeBlock.classList.add('hidden');
+                nameBlock.classList.add('hidden');
                 searchBlock.classList.add('hidden');
                 adminBlock.classList.remove('hidden');
-                adminGreeting.innerHTML = `С возвращением, Создатель <span>${name}</span>!`;
+                adminGreeting.innerHTML = `С возвращением, <span>${name}</span>!`;
                 adminSearchInput.focus();
                 adminIframe.src = 'about:blank';
-                
-                updateAdminHistoryDisplay();
-                updateOnlineUsers();
-                updateTimeStats();
-                
-                createConfetti();
             }
 
+            // Обработчик кнопки "Далее"
+            nextBtn.addEventListener('click', function() {
+                showNameInput();
+            });
+
+            // Обработчик входа
             enterBtn.addEventListener('click', function() {
                 const name = usernameInput.value.trim();
-                
-                if (!name) {
-                    alert('Введите имя');
-                    usernameInput.style.animation = 'shake 0.5s ease';
-                    setTimeout(() => usernameInput.style.animation = '', 500);
-                    return;
-                }
-                
-                // Если это попытка войти как админ
-                if (name === 'KacERORga') {
-                    // Если мы в режиме вопросов
-                    if (!memeQuestionsContainer.classList.contains('hidden')) {
-                        checkAnswers();
-                        return;
-                    }
-                    
-                    // Обычный вход с паролем
-                    const password = passwordInput.value.trim();
-                    
-                    if (!password) {
-                        alert('Введите пароль или нажмите "Забыли пароль?"');
-                        passwordInput.style.animation = 'shake 0.5s ease';
-                        setTimeout(() => passwordInput.style.animation = '', 500);
-                        return;
-                    }
-                    
-                    // Простой пароль для примера
-                    if (password === '1337' || password === '1234' || password === 'admin') {
-                        localStorage.setItem('krugle_user', name);
-                        currentUser = name;
-                        onlineUsers.set(name, Date.now());
-                        
-                        // Сохраняем время начала сессии
-                        sessionStartTime = Date.now();
-                        
+                if (name) {
+                    localStorage.setItem('krugle_user', name);
+                    if (adminUsers.includes(name)) {
                         showAdmin(name);
                     } else {
-                        alert('Неверный пароль! Попробуй "1337" или ответь на вопросы');
-                        passwordInput.style.animation = 'shake 0.5s ease';
-                        setTimeout(() => passwordInput.style.animation = '', 500);
-                        passwordInput.value = '';
+                        showSearch(name);
                     }
                 } else {
-                    // Обычный пользователь
-                    localStorage.setItem('krugle_user', name);
-                    currentUser = name;
-                    onlineUsers.set(name, Date.now());
-                    
-                    // Сохраняем время начала сессии
-                    sessionStartTime = Date.now();
-                    
-                    showSearch(name);
+                    alert('Введите имя');
                 }
             });
-            
+
             usernameInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    if (usernameInput.value === 'KacERORga' && passwordField.classList.contains('hidden')) {
-                        setupAdminTypingEffect();
-                    } else {
-                        enterBtn.click();
-                    }
-                }
+                if (e.key === 'Enter') enterBtn.click();
             });
-            
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    enterBtn.click();
-                }
-            });
+
+            // Функция поиска в iframe
+            function searchInIframe(iframe, query) {
+                if (!query.trim()) return;
+                iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&igu=1';
+            }
 
             // Обычный поиск
             searchBtn.addEventListener('click', function() {
                 searchInIframe(searchIframe, searchInput.value);
             });
-            
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') searchInIframe(searchIframe, searchInput.value);
             });
@@ -1907,7 +513,6 @@
                 link.addEventListener('click', function() {
                     const query = this.dataset.query;
                     if (!query) return;
-                    
                     if (!adminBlock.classList.contains('hidden')) {
                         searchInIframe(adminIframe, query);
                     } else {
@@ -1919,89 +524,18 @@
             // Выход из обычного режима
             logoutLink.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                // Сохраняем общее время
-                if (currentUser && sessionStartTime) {
-                    const sessionTime = Date.now() - sessionStartTime;
-                    totalTime[currentUser] = (totalTime[currentUser] || 0) + sessionTime;
-                    saveTotalTime();
-                }
-                
-                onlineUsers.delete(currentUser);
                 localStorage.removeItem('krugle_user');
-                showLogin();
+                showWelcome();
             });
 
             // Выход из админки
             if (adminLogoutLink) {
                 adminLogoutLink.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
-                    // Сохраняем общее время
-                    if (currentUser && sessionStartTime) {
-                        const sessionTime = Date.now() - sessionStartTime;
-                        totalTime[currentUser] = (totalTime[currentUser] || 0) + sessionTime;
-                        saveTotalTime();
-                    }
-                    
-                    onlineUsers.delete(currentUser);
                     localStorage.removeItem('krugle_user');
-                    showLogin();
+                    showWelcome();
                 });
             }
-
-            // Обработчики для истории
-            if (historyHeader) {
-                historyHeader.addEventListener('click', function() {
-                    historyContainer.classList.toggle('show');
-                    historyArrow.classList.toggle('rotated');
-                });
-            }
-
-            if (clearHistoryBtn) {
-                clearHistoryBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    clearHistory();
-                });
-            }
-
-            if (adminHistoryHeader) {
-                adminHistoryHeader.addEventListener('click', function() {
-                    adminHistoryContainer.classList.toggle('show');
-                    adminHistoryArrow.classList.toggle('rotated');
-                });
-            }
-
-            if (adminClearHistoryBtn) {
-                adminClearHistoryBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    clearHistory();
-                });
-            }
-
-            updateHistoryDisplay();
-            updateAdminHistoryDisplay();
-            
-            // Обновляем статистику каждую минуту
-            setInterval(() => {
-                if (currentUser) {
-                    onlineUsers.set(currentUser, Date.now());
-                    updateTimeStats();
-                    
-                    if (!adminBlock.classList.contains('hidden')) {
-                        updateOnlineUsers();
-                    }
-                }
-            }, 60000);
-            
-            // Сохраняем время при закрытии страницы
-            window.addEventListener('beforeunload', function() {
-                if (currentUser && sessionStartTime) {
-                    const sessionTime = Date.now() - sessionStartTime;
-                    totalTime[currentUser] = (totalTime[currentUser] || 0) + sessionTime;
-                    saveTotalTime();
-                }
-            });
         })();
     </script>
 </body>

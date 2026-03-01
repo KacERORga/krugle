@@ -20,16 +20,25 @@
             align-items: center;
             background: linear-gradient(145deg, #d9e2ec 0%, #c2d0de 100%);
             padding: 16px;
+            transition: background 0.3s;
+        }
+        body.dark {
+            background: linear-gradient(145deg, #1a2b3c 0%, #0f1a24 100%);
         }
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 48px;
             padding: 30px 30px 25px 30px;
             box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: background 0.3s;
+        }
+        body.dark .container {
+            background: rgba(30, 40, 55, 0.95);
+            border-color: rgba(255, 215, 0, 0.3);
         }
         h1 {
             font-size: 3.8rem;
@@ -38,6 +47,10 @@
             margin-bottom: 5px;
             letter-spacing: -1px;
             text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+        }
+        body.dark h1 {
+            color: gold;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
         }
         .greeting {
             font-size: 1.4rem;
@@ -48,12 +61,20 @@
             padding-bottom: 15px;
             font-weight: 300;
         }
+        body.dark .greeting {
+            color: #ddd;
+            border-bottom-color: gold;
+        }
         .greeting span {
             font-weight: 700;
             color: #1e4d7c;
             background: rgba(30, 77, 124, 0.1);
             padding: 4px 12px;
             border-radius: 40px;
+        }
+        body.dark .greeting span {
+            background: rgba(255, 215, 0, 0.2);
+            color: gold;
         }
         .admin-badge {
             background: gold;
@@ -70,7 +91,7 @@
             border: 2px solid #1e4d7c;
             border-radius: 60px;
             padding: 12px 24px;
-            margin-bottom: 20px;
+            margin: 10px 0 20px 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -80,6 +101,11 @@
             color: #1a2b3c;
             width: auto;
         }
+        body.dark .online-counter {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: gold;
+            color: gold;
+        }
         .online-counter span {
             background: #1e4d7c;
             color: white;
@@ -87,6 +113,10 @@
             border-radius: 40px;
             font-weight: 700;
             margin-left: 8px;
+        }
+        body.dark .online-counter span {
+            background: gold;
+            color: #1a2b3c;
         }
         .counter-container {
             display: flex;
@@ -114,6 +144,11 @@
             box-shadow: 0 8px 20px rgba(30, 77, 124, 0.2);
             transform: scale(1.02);
         }
+        body.dark .search-form input {
+            background: #2a3b4c;
+            border-color: #4a5f73;
+            color: white;
+        }
         .search-form button {
             padding: 0 28px;
             background: #1e4d7c;
@@ -130,12 +165,17 @@
             transform: translateY(4px);
             box-shadow: none;
         }
+        body.dark .search-form button {
+            background: gold;
+            color: #1a2b3c;
+            box-shadow: 0 4px 0 #b8860b;
+        }
         .quick-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
         .quick-link {
             background: white;
@@ -162,6 +202,12 @@
             transform: translateY(5px);
             box-shadow: none;
         }
+        body.dark .quick-link {
+            background: #2a3b4c;
+            border-color: gold;
+            color: gold;
+            box-shadow: 0 5px 0 #3a4b5c;
+        }
         .results-frame {
             width: 100%;
             height: 350px;
@@ -171,7 +217,9 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             display: block;
         }
-        /* Экран приветствия */
+        body.dark .results-frame {
+            border-color: gold;
+        }
         .welcome-screen, .name-screen {
             text-align: center;
             padding: 20px 10px;
@@ -181,11 +229,17 @@
             color: #1a2b3c;
             margin-bottom: 20px;
         }
+        body.dark .welcome-screen h2 {
+            color: gold;
+        }
         .welcome-screen p {
             font-size: 1.4rem;
             color: #2c3e50;
             margin-bottom: 30px;
             line-height: 1.5;
+        }
+        body.dark .welcome-screen p {
+            color: #ddd;
         }
         .welcome-screen button, .name-screen button {
             padding: 16px 40px;
@@ -220,7 +274,6 @@
             box-shadow: 0 0 0 4px rgba(30, 77, 124, 0.2);
             transform: scale(1.02);
         }
-        /* Анимации появления */
         @keyframes fadeSlideIn {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -230,12 +283,6 @@
         }
         .hidden {
             display: none !important;
-        }
-        .note {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #4a6f8c;
-            text-align: center;
         }
         .footer {
             margin-top: 15px;
@@ -249,6 +296,10 @@
             margin: 0 15px;
             font-weight: 500;
         }
+        body.dark .footer a {
+            color: gold;
+        }
+        /* Админ-панель */
         .admin-panel {
             background: #1e2b3a;
             color: white;
@@ -257,6 +308,9 @@
             text-align: center;
             margin-bottom: 20px;
             border: 3px solid gold;
+        }
+        body.dark .admin-panel {
+            background: #0f1a24;
         }
         .admin-panel h2 {
             color: gold;
@@ -276,149 +330,388 @@
             background: gold;
             color: #1a2b3c;
         }
+        /* Карточки фишек */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: #1e2b3a;
+            border: 2px solid gold;
+            border-radius: 30px;
+            padding: 15px;
+            color: white;
+            box-shadow: 0 5px 0 #b8860b;
+        }
+        body.dark .feature-card {
+            background: #0f1a24;
+        }
+        .feature-card h3 {
+            color: gold;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-card li {
+            background: rgba(255,255,255,0.1);
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+        .feature-card li::before {
+            content: "🟢";
+            margin-right: 8px;
+        }
+        .feature-card .history-item {
+            background: rgba(255,255,255,0.1);
+            margin: 4px 0;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .feature-card .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+        }
+        .feature-card button {
+            background: gold;
+            color: #1a2b3c;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .feature-card button:hover {
+            background: #e6b800;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: gold;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b8860b;
+        }
     </style>
 </head>
-<body>
+<body class="">
+    <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
     <div class="container" id="app">
-        <!-- Экран приветствия (первый шаг) -->
+        <!-- Экран приветствия -->
         <div id="welcome-block" class="welcome-screen">
             <h2>👋 Привет!</h2>
             <p>Это <strong>Kroogle-Кругл</strong> —<br>неофициальный браузер от колобанги</p>
             <button id="next-btn">✨ Далее ✨</button>
         </div>
 
-        <!-- Экран ввода имени (второй шаг) -->
+        <!-- Экран ввода имени -->
         <div id="name-block" class="name-screen hidden">
             <h2>🔐 Введите ваше имя</h2>
             <input type="text" id="username-input" placeholder="например, Александр" autofocus>
             <button id="enter-btn">🚪 Войти</button>
         </div>
 
-        <!-- Блок поиска (обычный пользователь) -->
+        <!-- Блок обычного пользователя -->
         <div id="search-block" class="hidden">
             <h1>🔍 Krugle</h1>
             <div class="greeting" id="greeting"></div>
-            
             <div class="counter-container">
                 <div class="online-counter">
                     👥 Сейчас на сайте: <span id="online-count">0</span>
                 </div>
             </div>
-            
             <div class="search-form">
                 <input type="text" id="search-input" placeholder="Что ищем?" autofocus>
                 <button id="search-btn">Найти</button>
             </div>
-
             <div class="quick-links">
                 <div class="quick-link" data-query="погода">☀️ Погода</div>
                 <div class="quick-link" data-query="рецепты">🍳 Еда</div>
                 <div class="quick-link" data-query="Minecraft">⛏️ Майнкрафт</div>
             </div>
-
             <iframe id="search-iframe" class="results-frame" src="about:blank"></iframe>
-
             <div class="footer">
                 <a href="#" id="logout-link">🚪 Сменить имя</a>
             </div>
         </div>
 
-        <!-- Секретная админка для избранных -->
+        <!-- Админка (только для KacERORga) с 10 фишками -->
         <div id="admin-block" class="hidden">
             <h1>👑 Krugle Admin</h1>
             <div class="greeting">
                 <span id="admin-greeting"></span>
                 <div class="admin-badge">⚡ Создатель ⚡</div>
             </div>
-            
             <div class="counter-container">
                 <div class="online-counter admin-counter">
                     👑 Онлайн: <span id="admin-online-count">0</span>
                 </div>
             </div>
-            
             <div class="admin-panel">
-                <h2>🎁 Подарок от KacERORga</h2>
-                <p>Добро пожаловать в тайную админку.</p>
-                <p>Секретные функции и всё, что захочешь.</p>
+                <h2>🎁 Панель управления</h2>
+                <p>Добро пожаловать в админку. Здесь 10 фишек для мониторинга.</p>
+            </div>
+
+            <!-- Сетка фишек -->
+            <div class="features-grid">
+                <!-- 1. Список онлайн пользователей -->
+                <div class="feature-card">
+                    <h3>👥 Онлайн</h3>
+                    <ul id="admin-online-list">
+                        <li>Загрузка...</li>
+                    </ul>
+                </div>
+                <!-- 2. История поиска -->
+                <div class="feature-card">
+                    <h3>📜 История поиска</h3>
+                    <div id="admin-history-list"></div>
+                </div>
+                <!-- 3. Статистика кликов -->
+                <div class="feature-card">
+                    <h3>📊 Клики по кнопкам</h3>
+                    <div id="admin-click-stats"></div>
+                </div>
+                <!-- 4. График посещаемости (упрощённый) -->
+                <div class="feature-card">
+                    <h3>📈 Посещаемость по часам</h3>
+                    <div id="admin-hourly-stats"></div>
+                </div>
+                <!-- 5. Последние действия -->
+                <div class="feature-card">
+                    <h3>🕒 Последние действия</h3>
+                    <div id="admin-last-actions"></div>
+                </div>
+                <!-- 6. Уведомления (счётчик) -->
+                <div class="feature-card">
+                    <h3>🔔 Уведомления</h3>
+                    <div id="admin-notifications">0 новых</div>
+                    <button id="clear-notifications">Очистить</button>
+                </div>
+                <!-- 7. Блокировка пользователей (демо) -->
+                <div class="feature-card">
+                    <h3>🔨 Блокировка</h3>
+                    <div id="admin-block-list"></div>
+                </div>
+                <!-- 8. Кнопка сброса статистики -->
+                <div class="feature-card">
+                    <h3>🔄 Сброс данных</h3>
+                    <button id="reset-stats">Сбросить всё</button>
+                </div>
+                <!-- 9. Тема админки (уже есть, но добавим кнопку) -->
+                <div class="feature-card">
+                    <h3>🎨 Тема</h3>
+                    <button id="admin-theme-toggle">Переключить тему</button>
+                </div>
+                <!-- 10. Экспорт CSV -->
+                <div class="feature-card">
+                    <h3>📥 Экспорт CSV</h3>
+                    <button id="export-csv">Скачать статистику</button>
+                </div>
             </div>
 
             <div class="search-form">
                 <input type="text" id="admin-search-input" placeholder="Поиск для админа" autofocus>
                 <button id="admin-search-btn">Найти</button>
             </div>
-
             <div class="quick-links">
                 <div class="quick-link" data-query="погода">☀️ Погода</div>
                 <div class="quick-link" data-query="рецепты">🍳 Еда</div>
                 <div class="quick-link" data-query="Minecraft">⛏️ Майнкрафт</div>
             </div>
-
             <iframe id="admin-iframe" class="results-frame" src="about:blank"></iframe>
-
             <div class="footer">
                 <a href="#" id="admin-logout-link">🚪 Выйти из админки</a>
             </div>
         </div>
     </div>
 
-    <!-- КОД СЧЁТЧИКА -->
-    <script type="text/javascript">
-    (function() {
-        function updateCounters() {
-            const randomCount = Math.floor(Math.random() * 5) + 1;
-            const normalCounter = document.getElementById('online-count');
-            const adminCounter = document.getElementById('admin-online-count');
-            if (normalCounter) normalCounter.textContent = randomCount;
-            if (adminCounter) adminCounter.textContent = randomCount + 2;
-        }
-        updateCounters();
-        setInterval(updateCounters, 30000);
-    })();
-    </script>
-
     <script>
         (function() {
-            // ⭐ СПИСОК АДМИНОВ
-            const adminUsers = ['KacERORga', 'Admin', 'Vlad', 'Masha'];
+            // ---------- Данные (все хранятся в localStorage) ----------
+            const ADMIN_NAMES = ['KacERORga', 'Admin', 'Vlad', 'Masha'];
+            const STORAGE_KEYS = {
+                USERS: 'krugle_users',           // { name, lastSeen }
+                SEARCH_HISTORY: 'krugle_search_history', // [{ name, query, time }]
+                CLICK_STATS: 'krugle_click_stats', // { погода: N, еда: N, майнкрафт: N }
+                ACTIONS: 'krugle_actions',        // [{ text, time }]
+                NOTIFICATIONS: 'krugle_notifications', // count
+                HOURLY: 'krugle_hourly'           // { hour: count }
+            };
 
-            // Элементы
+            // Инициализация данных
+            function initData() {
+                if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
+                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify({}));
+                }
+                if (!localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY)) {
+                    localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, JSON.stringify([]));
+                }
+                if (!localStorage.getItem(STORAGE_KEYS.CLICK_STATS)) {
+                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
+                }
+                if (!localStorage.getItem(STORAGE_KEYS.ACTIONS)) {
+                    localStorage.setItem(STORAGE_KEYS.ACTIONS, JSON.stringify([]));
+                }
+                if (!localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS)) {
+                    localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(0));
+                }
+                if (!localStorage.getItem(STORAGE_KEYS.HOURLY)) {
+                    localStorage.setItem(STORAGE_KEYS.HOURLY, JSON.stringify({}));
+                }
+            }
+            initData();
+
+            // Вспомогательные функции для работы с данными
+            function getUsers() {
+                return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || {};
+            }
+            function setUsers(users) {
+                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+            }
+            function getSearchHistory() {
+                return JSON.parse(localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY)) || [];
+            }
+            function addSearchHistory(entry) {
+                let history = getSearchHistory();
+                history.unshift(entry);
+                if (history.length > 20) history.pop();
+                localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, JSON.stringify(history));
+            }
+            function getClickStats() {
+                return JSON.parse(localStorage.getItem(STORAGE_KEYS.CLICK_STATS)) || { погода: 0, еда: 0, майнкрафт: 0 };
+            }
+            function incrementClickStat(button) {
+                let stats = getClickStats();
+                if (stats.hasOwnProperty(button)) {
+                    stats[button] = (stats[button] || 0) + 1;
+                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify(stats));
+                }
+            }
+            function getActions() {
+                return JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIONS)) || [];
+            }
+            function addAction(text) {
+                let actions = getActions();
+                actions.unshift({ text, time: new Date().toLocaleTimeString() });
+                if (actions.length > 15) actions.pop();
+                localStorage.setItem(STORAGE_KEYS.ACTIONS, JSON.stringify(actions));
+            }
+            function getNotifications() {
+                return JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS)) || 0;
+            }
+            function incNotifications() {
+                let n = getNotifications() + 1;
+                localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(n));
+            }
+            function clearNotifications() {
+                localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(0));
+            }
+            function getHourly() {
+                return JSON.parse(localStorage.getItem(STORAGE_KEYS.HOURLY)) || {};
+            }
+            function updateHourly(hour) {
+                let hourly = getHourly();
+                hourly[hour] = (hourly[hour] || 0) + 1;
+                localStorage.setItem(STORAGE_KEYS.HOURLY, JSON.stringify(hourly));
+            }
+
+            // Очистка устаревших пользователей (не обновлялись больше 15 секунд)
+            function cleanOfflineUsers() {
+                const users = getUsers();
+                const now = Date.now();
+                let changed = false;
+                for (let name in users) {
+                    if (now - users[name].lastSeen > 20000) { // 20 секунд
+                        delete users[name];
+                        changed = true;
+                    }
+                }
+                if (changed) setUsers(users);
+            }
+
+            // Обновление времени последнего действия пользователя
+            function updateUser(name) {
+                const users = getUsers();
+                users[name] = { lastSeen: Date.now() };
+                setUsers(users);
+            }
+
+            // Удаление пользователя
+            function removeUser(name) {
+                const users = getUsers();
+                if (users[name]) {
+                    delete users[name];
+                    setUsers(users);
+                }
+            }
+
+            // ---------- Элементы DOM ----------
             const welcomeBlock = document.getElementById('welcome-block');
             const nameBlock = document.getElementById('name-block');
             const searchBlock = document.getElementById('search-block');
             const adminBlock = document.getElementById('admin-block');
-            
             const nextBtn = document.getElementById('next-btn');
             const enterBtn = document.getElementById('enter-btn');
             const usernameInput = document.getElementById('username-input');
-            
-            // Обычный поиск
             const searchInput = document.getElementById('search-input');
             const searchBtn = document.getElementById('search-btn');
             const searchIframe = document.getElementById('search-iframe');
             const greeting = document.getElementById('greeting');
-            
-            // Админский поиск
             const adminSearchInput = document.getElementById('admin-search-input');
             const adminSearchBtn = document.getElementById('admin-search-btn');
             const adminIframe = document.getElementById('admin-iframe');
             const adminGreeting = document.getElementById('admin-greeting');
-            
             const quickLinks = document.querySelectorAll('.quick-link');
             const logoutLink = document.getElementById('logout-link');
             const adminLogoutLink = document.getElementById('admin-logout-link');
+            const onlineCountSpan = document.getElementById('online-count');
+            const adminOnlineCountSpan = document.getElementById('admin-online-count');
+            const adminOnlineList = document.getElementById('admin-online-list');
+            const adminHistoryList = document.getElementById('admin-history-list');
+            const adminClickStats = document.getElementById('admin-click-stats');
+            const adminHourlyStats = document.getElementById('admin-hourly-stats');
+            const adminLastActions = document.getElementById('admin-last-actions');
+            const adminNotificationsDiv = document.getElementById('admin-notifications');
+            const adminBlockList = document.getElementById('admin-block-list');
+            const resetStatsBtn = document.getElementById('reset-stats');
+            const exportCsvBtn = document.getElementById('export-csv');
+            const clearNotificationsBtn = document.getElementById('clear-notifications');
+            const themeToggle = document.getElementById('themeToggle');
+            const adminThemeToggle = document.getElementById('admin-theme-toggle');
+
+            // Текущий пользователь
+            let currentUser = null;
+            let pingInterval = null;
 
             // Проверка сохранённого имени
             const savedName = localStorage.getItem('krugle_user');
             if (savedName) {
-                // Сразу переходим к соответствующему интерфейсу
-                if (adminUsers.includes(savedName)) {
+                if (ADMIN_NAMES.includes(savedName)) {
                     showAdmin(savedName);
                 } else {
                     showSearch(savedName);
                 }
             } else {
-                // Показываем приветствие
                 showWelcome();
             }
 
@@ -427,8 +720,8 @@
                 nameBlock.classList.add('hidden');
                 searchBlock.classList.add('hidden');
                 adminBlock.classList.add('hidden');
-                // Добавляем анимацию появления
                 welcomeBlock.classList.add('fade-slide-in');
+                leave();
             }
 
             function showNameInput() {
@@ -448,6 +741,8 @@
                 greeting.innerHTML = `С возвращением, <span>${name}</span>!`;
                 searchInput.focus();
                 searchIframe.src = 'about:blank';
+                join(name);
+                addAction(`${name} вошёл на сайт`);
             }
 
             function showAdmin(name) {
@@ -458,19 +753,44 @@
                 adminGreeting.innerHTML = `С возвращением, <span>${name}</span>!`;
                 adminSearchInput.focus();
                 adminIframe.src = 'about:blank';
+                join(name);
+                addAction(`${name} вошёл в админку`);
+                renderAdminFeatures();
             }
 
-            // Обработчик кнопки "Далее"
-            nextBtn.addEventListener('click', function() {
-                showNameInput();
-            });
+            // Регистрация пользователя
+            function join(name) {
+                if (currentUser) leave();
+                currentUser = name;
+                updateUser(name);
+                if (pingInterval) clearInterval(pingInterval);
+                pingInterval = setInterval(() => {
+                    if (currentUser) updateUser(currentUser);
+                }, 10000); // пинг каждые 10 секунд
+                // Обновляем статистику по часам (первый вход в этот час)
+                const hour = new Date().getHours();
+                updateHourly(hour);
+            }
 
-            // Обработчик входа
+            function leave() {
+                if (currentUser) {
+                    removeUser(currentUser);
+                    addAction(`${currentUser} вышел`);
+                    currentUser = null;
+                }
+                if (pingInterval) {
+                    clearInterval(pingInterval);
+                    pingInterval = null;
+                }
+            }
+
+            // Обработчики входа
+            nextBtn.addEventListener('click', showNameInput);
             enterBtn.addEventListener('click', function() {
                 const name = usernameInput.value.trim();
                 if (name) {
                     localStorage.setItem('krugle_user', name);
-                    if (adminUsers.includes(name)) {
+                    if (ADMIN_NAMES.includes(name)) {
                         showAdmin(name);
                     } else {
                         showSearch(name);
@@ -479,40 +799,40 @@
                     alert('Введите имя');
                 }
             });
-
-            usernameInput.addEventListener('keypress', function(e) {
+            usernameInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') enterBtn.click();
             });
 
-            // Функция поиска в iframe
+            // Поиск
             function searchInIframe(iframe, query) {
                 if (!query.trim()) return;
                 iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&igu=1';
+                if (currentUser) {
+                    addSearchHistory({ name: currentUser, query, time: new Date().toLocaleTimeString() });
+                    addAction(`${currentUser} искал: ${query}`);
+                    incNotifications(); // новое уведомление
+                }
             }
-
-            // Обычный поиск
-            searchBtn.addEventListener('click', function() {
-                searchInIframe(searchIframe, searchInput.value);
-            });
-            searchInput.addEventListener('keypress', function(e) {
+            searchBtn.addEventListener('click', () => searchInIframe(searchIframe, searchInput.value));
+            searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') searchInIframe(searchIframe, searchInput.value);
             });
+            adminSearchBtn.addEventListener('click', () => searchInIframe(adminIframe, adminSearchInput.value));
+            adminSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchInIframe(adminIframe, adminSearchInput.value);
+            });
 
-            // Админский поиск
-            if (adminSearchBtn) {
-                adminSearchBtn.addEventListener('click', function() {
-                    searchInIframe(adminIframe, adminSearchInput.value);
-                });
-                adminSearchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') searchInIframe(adminIframe, adminSearchInput.value);
-                });
-            }
-
-            // Быстрые ссылки
+            // Быстрые ссылки (клики)
             quickLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     const query = this.dataset.query;
                     if (!query) return;
+                    const buttonName = this.innerText.replace(/[^a-zа-я]/gi, '').toLowerCase();
+                    if (buttonName.includes('погода')) incrementClickStat('погода');
+                    else if (buttonName.includes('еда')) incrementClickStat('еда');
+                    else if (buttonName.includes('майнкрафт')) incrementClickStat('майнкрафт');
+                    addAction(`${currentUser} нажал кнопку ${this.innerText}`);
+                    incNotifications();
                     if (!adminBlock.classList.contains('hidden')) {
                         searchInIframe(adminIframe, query);
                     } else {
@@ -521,21 +841,191 @@
                 });
             });
 
-            // Выход из обычного режима
-            logoutLink.addEventListener('click', function(e) {
+            // Выход
+            logoutLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('krugle_user');
+                leave();
+                showWelcome();
+            });
+            adminLogoutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('krugle_user');
+                leave();
                 showWelcome();
             });
 
-            // Выход из админки
-            if (adminLogoutLink) {
-                adminLogoutLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    localStorage.removeItem('krugle_user');
-                    showWelcome();
+            // Функция обновления всех данных в админке
+            function renderAdminFeatures() {
+                cleanOfflineUsers();
+                const users = getUsers();
+                const onlineNames = Object.keys(users).filter(name => name !== currentUser); // кроме себя
+                const count = onlineNames.length;
+
+                // Счётчик онлайн
+                if (adminOnlineCountSpan) adminOnlineCountSpan.textContent = count;
+                if (onlineCountSpan) onlineCountSpan.textContent = count;
+
+                // 1. Список онлайн пользователей
+                if (adminOnlineList) {
+                    if (onlineNames.length === 0) {
+                        adminOnlineList.innerHTML = '<li>🟡 Никого нет</li>';
+                    } else {
+                        let html = '';
+                        onlineNames.forEach(name => {
+                            html += `<li>${name} <button class="block-user" data-name="${name}">🔨</button></li>`;
+                        });
+                        adminOnlineList.innerHTML = html;
+                        // Обработчики блокировки
+                        document.querySelectorAll('.block-user').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const name = e.target.dataset.name;
+                                removeUser(name);
+                                addAction(`${name} заблокирован (демо)`);
+                                renderAdminFeatures();
+                            });
+                        });
+                    }
+                }
+
+                // 2. История поиска
+                if (adminHistoryList) {
+                    const history = getSearchHistory();
+                    if (history.length === 0) {
+                        adminHistoryList.innerHTML = '<div class="history-item">История пуста</div>';
+                    } else {
+                        let html = '';
+                        history.slice(0, 10).forEach(item => {
+                            html += `<div class="history-item">${item.time} — ${item.name}: "${item.query}"</div>`;
+                        });
+                        adminHistoryList.innerHTML = html;
+                    }
+                }
+
+                // 3. Статистика кликов
+                if (adminClickStats) {
+                    const stats = getClickStats();
+                    adminClickStats.innerHTML = `
+                        <div class="stat-row">☀️ Погода: ${stats.погода}</div>
+                        <div class="stat-row">🍳 Еда: ${stats.еда}</div>
+                        <div class="stat-row">⛏️ Майнкрафт: ${stats.майнкрафт}</div>
+                    `;
+                }
+
+                // 4. Посещаемость по часам
+                if (adminHourlyStats) {
+                    const hourly = getHourly();
+                    const hours = Array.from({length: 24}, (_, i) => i);
+                    let html = '';
+                    hours.forEach(h => {
+                        if (hourly[h]) {
+                            html += `<div class="stat-row">${h}:00 — ${hourly[h]} чел.</div>`;
+                        }
+                    });
+                    if (!html) html = '<div>Нет данных</div>';
+                    adminHourlyStats.innerHTML = html;
+                }
+
+                // 5. Последние действия
+                if (adminLastActions) {
+                    const actions = getActions();
+                    if (actions.length === 0) {
+                        adminLastActions.innerHTML = '<div>Нет действий</div>';
+                    } else {
+                        let html = '';
+                        actions.slice(0, 10).forEach(a => {
+                            html += `<div class="history-item">${a.time} — ${a.text}</div>`;
+                        });
+                        adminLastActions.innerHTML = html;
+                    }
+                }
+
+                // 6. Уведомления
+                if (adminNotificationsDiv) {
+                    adminNotificationsDiv.textContent = `🔔 ${getNotifications()} новых`;
+                }
+
+                // 7. Блокировка (уже встроена в список онлайн)
+                if (adminBlockList) {
+                    adminBlockList.innerHTML = '<p>Нажмите 🔨 рядом с именем, чтобы заблокировать (демо).</p>';
+                }
+            }
+
+            // Обработчики для админских кнопок
+            if (resetStatsBtn) {
+                resetStatsBtn.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify({}));
+                    localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, JSON.stringify([]));
+                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
+                    localStorage.setItem(STORAGE_KEYS.ACTIONS, JSON.stringify([]));
+                    localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(0));
+                    localStorage.setItem(STORAGE_KEYS.HOURLY, JSON.stringify({}));
+                    renderAdminFeatures();
+                    addAction('Статистика сброшена');
                 });
             }
+            if (exportCsvBtn) {
+                exportCsvBtn.addEventListener('click', () => {
+                    const data = {
+                        users: getUsers(),
+                        history: getSearchHistory(),
+                        clicks: getClickStats(),
+                        actions: getActions(),
+                        hourly: getHourly()
+                    };
+                    const csv = JSON.stringify(data, null, 2);
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'krugle_stats.csv';
+                    a.click();
+                });
+            }
+            if (clearNotificationsBtn) {
+                clearNotificationsBtn.addEventListener('click', () => {
+                    clearNotifications();
+                    renderAdminFeatures();
+                });
+            }
+
+            // Тема
+            const body = document.body;
+            function toggleTheme() {
+                body.classList.toggle('dark');
+                const isDark = body.classList.contains('dark');
+                themeToggle.textContent = isDark ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+                localStorage.setItem('krugle_theme', isDark ? 'dark' : 'light');
+            }
+            themeToggle.addEventListener('click', toggleTheme);
+            if (adminThemeToggle) adminThemeToggle.addEventListener('click', toggleTheme);
+            // Загружаем сохранённую тему
+            const savedTheme = localStorage.getItem('krugle_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark');
+                themeToggle.textContent = '☀️ Светлая тема';
+            }
+
+            // Обновление данных каждые 5 секунд (для админки)
+            setInterval(() => {
+                if (!adminBlock.classList.contains('hidden')) {
+                    renderAdminFeatures();
+                }
+                // Для всех обновляем счётчик онлайн
+                cleanOfflineUsers();
+                const count = Object.keys(getUsers()).length;
+                if (onlineCountSpan) onlineCountSpan.textContent = count;
+                if (adminOnlineCountSpan) adminOnlineCountSpan.textContent = count;
+            }, 5000);
+
+            // Слушаем изменения localStorage от других вкладок
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.SEARCH_HISTORY || e.key === STORAGE_KEYS.CLICK_STATS) {
+                    if (!adminBlock.classList.contains('hidden')) {
+                        renderAdminFeatures();
+                    }
+                }
+            });
         })();
     </script>
 </body>

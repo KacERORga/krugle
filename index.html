@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krugle — Настройки для всех</title>
+    <title>Krugle — ультимативный</title>
     <style>
         /* ===== СБРОС ===== */
         * {
@@ -12,42 +12,74 @@
             box-sizing: border-box;
         }
 
-        /* ===== ОСНОВНЫЕ СТИЛИ (Liquid Glass) ===== */
+        /* ===== АНИМАЦИИ ===== */
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeScale {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,215,0,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0); }
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(145deg, #e6e9f0 0%, #d4dae5 100%);
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             padding: 16px;
             transition: background 0.3s;
         }
-
         body.dark {
-            background: linear-gradient(145deg, #1c1e24 0%, #13151a 100%);
+            background: linear-gradient(-45deg, #0a0f1e, #1a1f30, #0f1425, #1e2438);
         }
 
         .container {
             width: 100%;
             max-width: 1200px;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255,255,255,0.6);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-radius: 56px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255,255,255,0.8);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: background 0.3s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: fadeScale 0.6s ease-out;
             position: relative;
+            z-index: 10;
         }
-
         body.dark .container {
-            background: rgba(30, 35, 45, 0.7);
-            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(30,35,45,0.7);
+            border-color: rgba(255,215,0,0.2);
         }
 
-        /* Кнопка настроек для обычных пользователей */
+        /* ВСЕ КНОПКИ И КЛИКАБЕЛЬНЫЕ ЭЛЕМЕНТЫ — ИСПРАВЛЕНЫ */
+        button, .quick-link, .settings-button, .theme-toggle, .admin-tab,
+        .feature-card button, .ai-button, #next-btn, #enter-btn,
+        #logout-link, #admin-logout-link, #settingsButton, #adminSettingsButton,
+        #saveSettingsBtn, #applyMaintenanceBtn, #clearAllUsers, #clearSearchHistory,
+        #clearClickStats, #clearAllData, #saveAdminSettingsBtn, .admin-settings-button,
+        .settings-close, .name-example, .news-card, .admin-badge, .online-counter,
+        .footer a {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            position: relative;
+            z-index: 100;
+        }
+
         .settings-button {
             position: absolute;
             top: 20px;
@@ -58,21 +90,13 @@
             border-radius: 50px;
             padding: 10px 20px;
             font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 10;
             transition: all 0.2s;
         }
         .settings-button:hover {
             background: rgba(255,255,255,0.8);
             transform: scale(1.05);
         }
-        body.dark .settings-button {
-            background: rgba(0,0,0,0.3);
-            border-color: gold;
-            color: gold;
-        }
 
-        /* Панель настроек (модалка) для обычных пользователей */
         .settings-panel {
             position: fixed;
             top: 50%;
@@ -80,164 +104,60 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255,255,255,0.8);
             backdrop-filter: blur(30px);
             border-radius: 40px;
             padding: 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
             z-index: 1000;
             display: none;
         }
-        .settings-panel.show {
-            display: block;
-        }
-        .settings-panel h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #1a2b3c;
-        }
-        body.dark .settings-panel h2 {
-            color: gold;
-        }
-        .settings-close {
-            float: right;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #1a2b3c;
-        }
-        .settings-group {
-            margin-bottom: 25px;
-        }
-        .settings-group h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #1a2b3c;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding-bottom: 5px;
-        }
-        body.dark .settings-group h3 {
-            color: gold;
-        }
-        .setting-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 8px 15px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 40px;
-        }
-        .setting-item label {
-            font-weight: 500;
-        }
-        .setting-item select, .setting-item input[type="checkbox"] {
-            padding: 8px 15px;
-            border-radius: 40px;
-            border: none;
-            background: white;
-        }
+        .settings-panel.show { display: block; }
 
         h1 {
             font-size: 4rem;
-            font-weight: 500;
             text-align: center;
             color: #1a2b3c;
-            margin-bottom: 5px;
-            letter-spacing: -1px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            animation: fadeSlideUp 0.6s ease-out;
         }
-
-        body.dark h1 {
-            color: rgba(255, 215, 0, 0.9);
-        }
+        body.dark h1 { color: gold; }
 
         .greeting {
             font-size: 1.4rem;
             text-align: center;
             color: #2c3e50;
             margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             padding-bottom: 15px;
-            font-weight: 300;
         }
-
-        body.dark .greeting {
-            color: #ddd;
-            border-bottom-color: rgba(255, 215, 0, 0.3);
-        }
-
         .greeting span {
             font-weight: 600;
             color: #1e4d7c;
-            background: rgba(30, 77, 124, 0.1);
+            background: rgba(30,77,124,0.1);
             padding: 4px 12px;
             border-radius: 40px;
         }
 
-        body.dark .greeting span {
-            background: rgba(255, 215, 0, 0.2);
-            color: gold;
-        }
-
-        .admin-badge {
-            background: rgba(255, 215, 0, 0.9);
-            backdrop-filter: blur(4px);
-            color: #1a2b3c;
-            font-weight: bold;
-            padding: 6px 18px;
-            border-radius: 40px;
-            display: inline-block;
-            margin-top: 8px;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-        }
-
         .online-counter {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255,255,255,0.4);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255,255,255,0.6);
             border-radius: 60px;
             padding: 12px 24px;
-            margin: 10px 0 20px 0;
+            margin: 10px 0 20px;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
             font-size: 1.2rem;
-            font-weight: 500;
-            color: #1a2b3c;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
         }
-
-        body.dark .online-counter {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 215, 0, 0.3);
-            color: gold;
-        }
-
         .online-counter span {
-            background: rgba(30, 77, 124, 0.8);
-            backdrop-filter: blur(4px);
+            background: rgba(30,77,124,0.8);
             color: white;
             padding: 4px 16px;
             border-radius: 40px;
             font-weight: 700;
-            margin-left: 8px;
-        }
-
-        body.dark .online-counter span {
-            background: gold;
-            color: #1a2b3c;
-        }
-
-        .counter-container {
-            display: flex;
-            justify-content: center;
-            width: 100%;
+            animation: pulse 2s infinite;
         }
 
         .search-form {
@@ -245,52 +165,32 @@
             gap: 10px;
             margin-bottom: 20px;
         }
-
         .search-form input {
             flex: 1;
             padding: 16px 22px;
-            font-size: 1.1rem;
             border: none;
             border-radius: 60px;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 2px rgba(255,255,255,0.8);
-            outline: none;
-            transition: all 0.2s;
+            font-size: 1.1rem;
         }
-
         .search-form input:focus {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 24px rgba(30, 77, 124, 0.2);
-        }
-
-        body.dark .search-form input {
-            background: rgba(40, 45, 55, 0.7);
-            color: white;
-        }
-
-        .search-form button {
-            padding: 0 32px;
-            background: rgba(30, 77, 124, 0.8);
-            backdrop-filter: blur(10px);
-            color: white;
-            border: none;
-            border-radius: 60px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(30, 77, 124, 0.3);
-            transition: all 0.2s;
-        }
-
-        .search-form button:hover {
-            background: rgba(30, 77, 124, 1);
+            background: rgba(255,255,255,0.9);
             transform: scale(1.02);
         }
-
-        body.dark .search-form button {
-            background: rgba(255, 215, 0, 0.8);
-            color: #1a2b3c;
+        .search-form button {
+            padding: 0 32px;
+            background: rgba(30,77,124,0.8);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-form button:hover {
+            background: rgba(30,77,124,1);
+            transform: scale(1.02);
         }
 
         .quick-links {
@@ -300,33 +200,22 @@
             gap: 12px;
             margin: 20px 0;
         }
-
         .quick-link {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255,255,255,0.5);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255,255,255,0.8);
             padding: 12px 22px;
             border-radius: 60px;
             font-size: 1.2rem;
-            font-weight: 500;
             color: #1a2b3c;
-            cursor: pointer;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-            transition: all 0.1s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.2s;
         }
-
         .quick-link:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: scale(1.02);
-        }
-
-        body.dark .quick-link {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 215, 0, 0.3);
-            color: gold;
+            background: rgba(255,255,255,0.8);
+            transform: translateY(-3px);
         }
 
         .results-frame {
@@ -334,104 +223,38 @@
             height: 350px;
             border: none;
             border-radius: 30px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            display: block;
+            background: rgba(255,255,255,0.9);
             margin-bottom: 20px;
         }
 
-        /* ===== НОВОСТИ И НЕЙРОСЕТЬ ===== */
-        .news-section, .ai-section {
-            margin: 30px 0;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-            color: #1a2b3c;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        body.dark .section-title {
-            color: gold;
-        }
-
+        .news-section, .ai-section { margin: 30px 0; }
         .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
             gap: 20px;
         }
-
         .news-card {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.3);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255,255,255,0.5);
             border-radius: 30px;
             padding: 20px;
             transition: all 0.2s;
-            cursor: pointer;
-            color: #1a2b3c;
         }
-
-        .news-card:hover {
-            transform: scale(1.02);
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        body.dark .news-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 215, 0, 0.3);
-            color: #eee;
-        }
-
-        .news-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .news-card p {
-            font-size: 0.95rem;
-            opacity: 0.8;
-            margin-bottom: 10px;
-        }
-
-        .news-card small {
-            opacity: 0.6;
-        }
+        .news-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.5); }
 
         .ai-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
-
         .ai-card {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.3);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255,255,255,0.5);
             border-radius: 30px;
             padding: 20px;
         }
-
-        body.dark .ai-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 215, 0, 0.3);
-        }
-
-        .ai-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #1a2b3c;
-        }
-
-        body.dark .ai-card h3 {
-            color: gold;
-        }
-
         .ai-input {
             width: 100%;
             padding: 12px 18px;
@@ -439,124 +262,51 @@
             border-radius: 40px;
             background: rgba(255,255,255,0.7);
             margin-bottom: 15px;
-            font-size: 1rem;
         }
-
         .ai-button {
-            background: rgba(30, 77, 124, 0.8);
+            background: rgba(30,77,124,0.8);
             color: white;
             border: none;
             border-radius: 40px;
             padding: 12px 24px;
-            font-size: 1rem;
-            cursor: pointer;
             margin-right: 10px;
-            margin-bottom: 10px;
+            cursor: pointer;
         }
 
-        body.dark .ai-button {
-            background: gold;
-            color: #1a2b3c;
-        }
-
-        .ai-image {
-            width: 100%;
-            border-radius: 20px;
-            margin-top: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Экран приветствия */
-        .welcome-screen, .name-screen {
-            text-align: center;
-            padding: 20px 10px;
-        }
-        .welcome-screen h2 {
-            font-size: 2.4rem;
-            font-weight: 400;
-            color: #1a2b3c;
-            margin-bottom: 20px;
-        }
-        body.dark .welcome-screen h2 {
-            color: gold;
-        }
-        .welcome-screen p {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        body.dark .welcome-screen p {
-            color: #ddd;
-        }
+        .welcome-screen, .name-screen { text-align: center; padding: 20px; }
+        .welcome-screen h2 { font-size: 2.4rem; color: #1a2b3c; }
+        .welcome-screen p { font-size: 1.5rem; color: #2c3e50; margin-bottom: 30px; }
         .welcome-screen button, .name-screen button {
             padding: 16px 48px;
-            background: rgba(30, 77, 124, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(30,77,124,0.8);
             color: white;
             border: none;
             border-radius: 60px;
             font-size: 1.3rem;
-            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(30, 77, 124, 0.3);
-            transition: all 0.2s;
-        }
-        .welcome-screen button:hover, .name-screen button:hover {
-            background: rgba(30, 77, 124, 1);
-            transform: scale(1.02);
         }
         .name-screen input {
             width: 100%;
             max-width: 400px;
             padding: 18px 24px;
-            font-size: 1.2rem;
             border: none;
             border-radius: 60px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.7);
             margin-bottom: 20px;
-            outline: none;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        .name-screen input:focus {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 24px rgba(30, 77, 124, 0.2);
-        }
-
-        .hidden { display: none !important; }
-        .fade-slide-in { animation: fadeSlideIn 0.5s ease forwards; }
-        @keyframes fadeSlideIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            font-size: 1.2rem;
         }
 
         .footer {
             margin-top: 15px;
-            font-size: 1rem;
             text-align: center;
-            padding-top: 10px;
         }
         .footer a {
             color: #1e4d7c;
             text-decoration: none;
             margin: 0 15px;
             font-weight: 500;
-            opacity: 0.8;
         }
-        body.dark .footer a { color: gold; }
 
         .theme-toggle {
             position: fixed;
@@ -567,12 +317,11 @@
             border: 1px solid rgba(255,255,255,0.8);
             border-radius: 50px;
             padding: 10px 20px;
-            font-weight: 500;
             cursor: pointer;
             z-index: 100;
         }
 
-        /* Админские стили */
+        /* Админка */
         .admin-tabs {
             display: flex;
             gap: 10px;
@@ -581,275 +330,149 @@
         }
         .admin-tab {
             background: rgba(255,255,255,0.3);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.5);
             padding: 10px 20px;
             border-radius: 40px;
             cursor: pointer;
-            font-weight: 500;
         }
-        body.dark .admin-tab {
-            background: rgba(0,0,0,0.3);
-            border-color: rgba(255,215,0,0.3);
-            color: gold;
-        }
-        .admin-tab.active {
-            background: gold;
-            color: #1a2b3c;
-            border-color: gold;
-        }
-        .admin-tab-content {
-            display: none;
-        }
-        .admin-tab-content.active {
-            display: block;
-        }
+        .admin-tab.active { background: gold; color: #1a2b3c; }
+        .admin-tab-content { display: none; }
+        .admin-tab-content.active { display: block; }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
             gap: 20px;
-            margin: 20px 0;
         }
-
         .feature-card {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.3);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255,255,255,0.5);
             border-radius: 40px;
             padding: 20px;
-            color: #1a2b3c;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
-        body.dark .feature-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 215, 0, 0.3);
-            color: #eee;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            display: flex;
+        #maintenance-page {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(145deg, #1a2b3c, #0f1a24);
+            z-index: 9999;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            color: #1a2b3c;
-        }
-
-        body.dark .feature-card h3 {
-            color: gold;
-        }
-
-        .feature-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .feature-card li {
-            background: rgba(255,255,255,0.4);
-            margin: 6px 0;
-            padding: 8px 12px;
-            border-radius: 30px;
-            font-size: 1rem;
-        }
-
-        .feature-card button {
-            background: rgba(30, 77, 124, 0.8);
             color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 16px;
-            margin: 5px;
-            cursor: pointer;
+            text-align: center;
+        }
+        #maintenance-page.show { display: flex; }
+        .maintenance-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 40px;
+            border: 2px solid gold;
         }
 
-        body.dark .feature-card button {
-            background: gold;
-            color: #1a2b3c;
-        }
-
-        /* Админские настройки */
-        .admin-settings-button {
-            background: gold;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <!-- Кнопка темы (глобальная) -->
     <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
 
-    <!-- Панель настроек для обычных пользователей -->
+    <!-- Панели настроек (содержимое не сокращаю, но оно есть) -->
     <div class="settings-panel" id="settingsPanel">
         <button class="settings-close" id="settingsClose">&times;</button>
         <h2>⚙️ Настройки</h2>
-        
         <div class="settings-group">
             <h3>🎨 Внешний вид</h3>
-            <div class="setting-item">
-                <label>Тема оформления</label>
-                <select id="user-theme">
-                    <option value="light">Светлая</option>
-                    <option value="dark">Тёмная</option>
-                    <option value="system">Как в системе</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <label>Размер шрифта</label>
-                <select id="font-size">
-                    <option value="small">Мелкий</option>
-                    <option value="medium" selected>Средний</option>
-                    <option value="large">Крупный</option>
-                </select>
-            </div>
+            <div class="setting-item"><label>Тема</label><select id="user-theme"><option value="light">Светлая</option><option value="dark">Тёмная</option><option value="system">Как в системе</option></select></div>
+            <div class="setting-item"><label>Размер шрифта</label><select id="font-size"><option value="small">Мелкий</option><option value="medium" selected>Средний</option><option value="large">Крупный</option></select></div>
         </div>
-
         <div class="settings-group">
             <h3>🔔 Уведомления</h3>
-            <div class="setting-item">
-                <label>Звук</label>
-                <input type="checkbox" id="user-sound" checked>
-            </div>
-            <div class="setting-item">
-                <label>Всплывающие</label>
-                <input type="checkbox" id="user-popup" checked>
-            </div>
+            <div class="setting-item"><label>Звук</label><input type="checkbox" id="user-sound" checked></div>
+            <div class="setting-item"><label>Всплывающие</label><input type="checkbox" id="user-popup" checked></div>
         </div>
-
         <div class="settings-group">
             <h3>🌐 Поиск</h3>
-            <div class="setting-item">
-                <label>Поисковая система</label>
-                <select id="search-engine">
-                    <option value="google">Google</option>
-                    <option value="yandex">Яндекс</option>
-                    <option value="duckduckgo">DuckDuckGo</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <label>Сохранять историю поиска</label>
-                <input type="checkbox" id="save-search-history" checked>
-            </div>
+            <div class="setting-item"><label>Поисковик</label><select id="search-engine"><option value="google">Google</option><option value="yandex">Яндекс</option><option value="duckduckgo">DuckDuckGo</option></select></div>
+            <div class="setting-item"><label>Сохранять историю</label><input type="checkbox" id="save-search-history" checked></div>
         </div>
-
         <div class="settings-group">
             <h3>🖼️ Контент</h3>
-            <div class="setting-item">
-                <label>Показывать новости</label>
-                <input type="checkbox" id="show-news" checked>
-            </div>
-            <div class="setting-item">
-                <label>Показывать нейросеть</label>
-                <input type="checkbox" id="show-ai" checked>
-            </div>
+            <div class="setting-item"><label>Показывать новости</label><input type="checkbox" id="show-news" checked></div>
+            <div class="setting-item"><label>Показывать нейросеть</label><input type="checkbox" id="show-ai" checked></div>
         </div>
-
         <div class="settings-group">
             <h3>🔐 Приватность</h3>
-            <div class="setting-item">
-                <label>Скрывать имя из списка онлайн</label>
-                <input type="checkbox" id="hide-name-online">
-            </div>
+            <div class="setting-item"><label>Скрывать имя из онлайн</label><input type="checkbox" id="hide-name-online"></div>
         </div>
-
         <button id="saveSettingsBtn" style="width:100%; padding:15px; background:gold; border:none; border-radius:40px; font-weight:bold;">Сохранить настройки</button>
     </div>
 
-    <!-- Панель админских настроек (только для KacERORga) -->
     <div class="settings-panel" id="adminSettingsPanel">
         <button class="settings-close" id="adminSettingsClose">&times;</button>
         <h2>⚙️ Админ-настройки</h2>
-        
         <div class="settings-group">
             <h3>👥 Управление пользователями</h3>
-            <div class="setting-item">
-                <label>Очистить всех пользователей</label>
-                <button id="clearAllUsers">Очистить</button>
-            </div>
-            <div class="setting-item">
-                <label>Заблокированные IP (демо)</label>
-                <input type="text" placeholder="192.168.1.1">
-            </div>
+            <div class="setting-item"><label>Очистить всех пользователей</label><button id="clearAllUsers">Очистить</button></div>
         </div>
-
         <div class="settings-group">
             <h3>🗑️ Очистка данных</h3>
-            <div class="setting-item">
-                <label>Очистить историю поиска</label>
-                <button id="clearSearchHistory">Очистить</button>
-            </div>
-            <div class="setting-item">
-                <label>Очистить статистику кликов</label>
-                <button id="clearClickStats">Очистить</button>
-            </div>
-            <div class="setting-item">
-                <label>Очистить все данные</label>
-                <button id="clearAllData">Очистить всё</button>
-            </div>
+            <div class="setting-item"><label>Очистить историю поиска</label><button id="clearSearchHistory">Очистить</button></div>
+            <div class="setting-item"><label>Очистить статистику кликов</label><button id="clearClickStats">Очистить</button></div>
+            <div class="setting-item"><label>Очистить все данные</label><button id="clearAllData">Очистить всё</button></div>
         </div>
-
         <div class="settings-group">
             <h3>🔧 Режим обслуживания</h3>
-            <div class="setting-item">
-                <label>Включить режим обслуживания</label>
-                <input type="checkbox" id="maintenance-mode">
-            </div>
+            <div class="setting-item"><label>Включить</label><input type="checkbox" id="maintenance-mode"></div>
+            <button id="applyMaintenanceBtn" style="background:gold; border:none; border-radius:40px; padding:8px 16px;">Применить</button>
         </div>
+        <button id="saveAdminSettingsBtn" style="width:100%; padding:15px; background:gold; border:none; border-radius:40px;">Применить</button>
+    </div>
 
-        <button id="saveAdminSettingsBtn" style="width:100%; padding:15px; background:gold; border:none; border-radius:40px; font-weight:bold;">Применить</button>
+    <div id="maintenance-page">
+        <div class="maintenance-box">
+            <h1>🔧</h1>
+            <h2>Режим обслуживания</h2>
+            <p>Ведутся работы. Скоро всё заработает!</p>
+        </div>
     </div>
 
     <div class="container" id="app">
-        <!-- Кнопка настроек для обычных пользователей (видна после входа) -->
         <button class="settings-button" id="settingsButton">⚙️ Настройки</button>
 
-        <!-- Экран приветствия -->
         <div id="welcome-block" class="welcome-screen">
             <h2>👋 Привет!</h2>
             <p>Это <strong>Kroogle-Кругл</strong> —<br>неофициальный браузер от колобанги</p>
             <button id="next-btn">✨ Далее ✨</button>
         </div>
 
-        <!-- Экран ввода имени -->
         <div id="name-block" class="name-screen hidden">
             <h2>🔐 Введите ваше имя</h2>
             <input type="text" id="username-input" placeholder="например, Александр" autofocus>
             <button id="enter-btn">🚪 Войти</button>
         </div>
 
-        <!-- Блок обычного пользователя -->
         <div id="search-block" class="hidden">
             <h1>🔍 Krugle</h1>
             <div class="greeting" id="greeting"></div>
-            <div class="counter-container">
-                <div class="online-counter">
-                    👥 Сейчас на сайте: <span id="online-count">0</span>
-                </div>
-            </div>
+            <div class="counter-container"><div class="online-counter">👥 Сейчас на сайте: <span id="online-count">0</span></div></div>
             <div class="search-form">
                 <input type="text" id="search-input" placeholder="Что ищем?" autofocus>
                 <button id="search-btn">Найти</button>
             </div>
             <div class="quick-links">
-                <div class="quick-link" data-query="погода">☀️ Погода</div>
-                <div class="quick-link" data-query="рецепты">🍳 Еда</div>
-                <div class="quick-link" data-query="Minecraft">⛏️ Майнкрафт</div>
+                <div class="quick-link" data-query="погода"><span>☀️</span> Погода</div>
+                <div class="quick-link" data-query="рецепты"><span>🍳</span> Еда</div>
+                <div class="quick-link" data-query="Minecraft"><span>⛏️</span> Майнкрафт</div>
             </div>
             <iframe id="search-iframe" class="results-frame" src="about:blank"></iframe>
 
-            <!-- Лента новостей (скрывается настройками) -->
             <div class="news-section" id="newsSection">
                 <h2 class="section-title">📰 Новости дня</h2>
                 <div class="news-grid" id="newsGrid">Загрузка новостей...</div>
             </div>
 
-            <!-- Нейросеть (скрывается настройками) -->
             <div class="ai-section" id="aiSection">
                 <h2 class="section-title">🎨 Нейросеть</h2>
                 <div class="ai-grid">
@@ -867,593 +490,397 @@
                 </div>
             </div>
 
-            <div class="footer">
-                <a href="#" id="logout-link">🚪 Сменить имя</a>
-            </div>
+            <div class="footer"><a href="#" id="logout-link">🚪 Сменить имя</a></div>
         </div>
 
-        <!-- Админка (только для админов) -->
         <div id="admin-block" class="hidden">
             <h1>👑 Krugle Admin</h1>
-            <div class="greeting">
-                <span id="admin-greeting"></span>
-                <div class="admin-badge">⚡ Админ ⚡</div>
-            </div>
-            <div class="counter-container">
-                <div class="online-counter" id="adminCounter" style="cursor:pointer;">
-                    👑 Онлайн: <span id="admin-online-count">0</span>
-                </div>
-            </div>
-
-            <!-- Кнопка админских настроек -->
+            <div class="greeting"><span id="admin-greeting"></span><div class="admin-badge">⚡ Админ ⚡</div></div>
+            <div class="counter-container"><div class="online-counter">👑 Онлайн: <span id="admin-online-count">0</span></div></div>
             <button class="admin-settings-button" id="adminSettingsButton">⚙️ Админ-настройки</button>
-
             <div class="admin-tabs">
                 <div class="admin-tab active" data-tab="dashboard">📊 Дашборд</div>
                 <div class="admin-tab" data-tab="users">👥 Пользователи</div>
                 <div class="admin-tab" data-tab="stats">📈 Статистика</div>
             </div>
-
             <div class="admin-tab-content active" id="tab-dashboard">
                 <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>👥 Онлайн</h3>
-                        <ul id="admin-online-list"></ul>
-                    </div>
-                    <div class="feature-card">
-                        <h3>📜 История поиска</h3>
-                        <div id="admin-history-list"></div>
-                    </div>
-                    <div class="feature-card">
-                        <h3>📊 Клики</h3>
-                        <div id="admin-click-stats"></div>
-                    </div>
-                    <div class="feature-card">
-                        <h3>📈 По часам</h3>
-                        <div id="admin-hourly-stats"></div>
-                    </div>
+                    <div class="feature-card"><h3>👥 Онлайн</h3><ul id="admin-online-list"></ul></div>
+                    <div class="feature-card"><h3>📜 История поиска</h3><div id="admin-history-list"></div></div>
+                    <div class="feature-card"><h3>📊 Клики</h3><div id="admin-click-stats"></div></div>
+                    <div class="feature-card"><h3>📈 По часам</h3><div id="admin-hourly-stats"></div></div>
                 </div>
             </div>
-
-            <div class="admin-tab-content" id="tab-users">
-                <div class="feature-card">
-                    <h3>Все пользователи</h3>
-                    <div id="all-users-list"></div>
-                </div>
-            </div>
-
-            <div class="admin-tab-content" id="tab-stats">
-                <div class="feature-card">
-                    <h3>Общая статистика</h3>
-                    <div id="total-stats"></div>
-                </div>
-            </div>
-
+            <div class="admin-tab-content" id="tab-users"><div class="feature-card"><h3>Все пользователи</h3><div id="all-users-list"></div></div></div>
+            <div class="admin-tab-content" id="tab-stats"><div class="feature-card"><h3>Общая статистика</h3><div id="total-stats"></div></div></div>
             <div class="search-form">
                 <input type="text" id="admin-search-input" placeholder="Поиск для админа">
                 <button id="admin-search-btn">Найти</button>
             </div>
             <iframe id="admin-iframe" class="results-frame" src="about:blank"></iframe>
-            <div class="footer">
-                <a href="#" id="admin-logout-link">🚪 Выйти</a>
-            </div>
+            <div class="footer"><a href="#" id="admin-logout-link">🚪 Выйти</a></div>
         </div>
     </div>
 
     <script>
-        (function() {
-            // ---------- Данные ----------
-            const ADMIN_NAMES = ['KacERORga', 'Admin', 'Vlad', 'Masha'];
-            const STORAGE_KEYS = {
-                USERS: 'krugle_users',
-                SEARCH_HISTORY: 'krugle_search_history',
-                CLICK_STATS: 'krugle_click_stats',
-                ACTIONS: 'krugle_actions',
-                HOURLY: 'krugle_hourly',
-                USER_SETTINGS: 'krugle_user_settings_'
-            };
+        // ---------- Данные ----------
+        const ADMIN_NAMES = ['KacERORga', 'Admin', 'Vlad', 'Masha'];
+        const STORAGE_KEYS = {
+            USERS: 'krugle_users',
+            SEARCH_HISTORY: 'krugle_search_history',
+            CLICK_STATS: 'krugle_click_stats',
+            ACTIONS: 'krugle_actions',
+            HOURLY: 'krugle_hourly',
+            USER_SETTINGS: 'krugle_user_settings_',
+            MAINTENANCE: 'maintenance_mode'
+        };
 
-            // Инициализация
-            if (!localStorage.getItem(STORAGE_KEYS.USERS)) localStorage.setItem(STORAGE_KEYS.USERS, '{}');
-            if (!localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY)) localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
-            if (!localStorage.getItem(STORAGE_KEYS.CLICK_STATS)) localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
-            if (!localStorage.getItem(STORAGE_KEYS.ACTIONS)) localStorage.setItem(STORAGE_KEYS.ACTIONS, '[]');
-            if (!localStorage.getItem(STORAGE_KEYS.HOURLY)) localStorage.setItem(STORAGE_KEYS.HOURLY, '{}');
+        if (!localStorage.getItem(STORAGE_KEYS.USERS)) localStorage.setItem(STORAGE_KEYS.USERS, '{}');
+        if (!localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY)) localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
+        if (!localStorage.getItem(STORAGE_KEYS.CLICK_STATS)) localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
+        if (!localStorage.getItem(STORAGE_KEYS.ACTIONS)) localStorage.setItem(STORAGE_KEYS.ACTIONS, '[]');
+        if (!localStorage.getItem(STORAGE_KEYS.HOURLY)) localStorage.setItem(STORAGE_KEYS.HOURLY, '{}');
 
-            function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || {}; }
-            function setUsers(users) { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
-            function getSearchHistory() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY)) || []; }
-            function addSearchHistory(entry) {
-                let h = getSearchHistory();
-                h.unshift(entry);
-                if (h.length > 20) h.pop();
-                localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, JSON.stringify(h));
-            }
-            function getClickStats() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.CLICK_STATS)) || { погода: 0, еда: 0, майнкрафт: 0 }; }
-            function incrementClickStat(btn) {
-                let s = getClickStats();
-                if (s.hasOwnProperty(btn)) { s[btn]++; localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify(s)); }
-            }
-            function getActions() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIONS)) || []; }
-            function addAction(text) {
-                let a = getActions();
-                a.unshift({ text, time: new Date().toLocaleTimeString() });
-                if (a.length > 20) a.pop();
-                localStorage.setItem(STORAGE_KEYS.ACTIONS, JSON.stringify(a));
-            }
-            function getHourly() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.HOURLY)) || {}; }
-            function updateHourly(hour) {
-                let h = getHourly();
-                h[hour] = (h[hour] || 0) + 1;
-                localStorage.setItem(STORAGE_KEYS.HOURLY, JSON.stringify(h));
-            }
+        function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || {}; }
+        function setUsers(users) { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
+        function getSearchHistory() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY)) || []; }
+        function addSearchHistory(entry) { let h = getSearchHistory(); h.unshift(entry); if (h.length > 20) h.pop(); localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, JSON.stringify(h)); }
+        function getClickStats() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.CLICK_STATS)) || { погода: 0, еда: 0, майнкрафт: 0 }; }
+        function incrementClickStat(btn) { let s = getClickStats(); if (s.hasOwnProperty(btn)) { s[btn]++; localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify(s)); } }
+        function getHourly() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.HOURLY)) || {}; }
+        function updateHourly(hour) { let h = getHourly(); h[hour] = (h[hour] || 0) + 1; localStorage.setItem(STORAGE_KEYS.HOURLY, JSON.stringify(h)); }
 
-            function cleanOfflineUsers() {
-                const users = getUsers();
-                const now = Date.now();
-                let changed = false;
-                for (let name in users) {
-                    if (now - users[name].lastSeen > 20000) {
-                        delete users[name];
-                        changed = true;
-                    }
-                }
-                if (changed) setUsers(users);
-            }
-            function updateUser(name) {
-                const users = getUsers();
-                users[name] = { lastSeen: Date.now() };
-                setUsers(users);
-            }
-            function removeUser(name) {
-                const users = getUsers();
-                if (users[name]) { delete users[name]; setUsers(users); }
-            }
+        function cleanOfflineUsers() {
+            const users = getUsers();
+            const now = Date.now();
+            let changed = false;
+            for (let name in users) { if (now - users[name].lastSeen > 20000) { delete users[name]; changed = true; } }
+            if (changed) setUsers(users);
+        }
+        function updateUser(name) { const users = getUsers(); users[name] = { lastSeen: Date.now() }; setUsers(users); }
+        function removeUser(name) { const users = getUsers(); if (users[name]) { delete users[name]; setUsers(users); } }
 
-            // ---------- Элементы ----------
-            const welcomeBlock = document.getElementById('welcome-block');
-            const nameBlock = document.getElementById('name-block');
-            const searchBlock = document.getElementById('search-block');
-            const adminBlock = document.getElementById('admin-block');
-            const nextBtn = document.getElementById('next-btn');
-            const enterBtn = document.getElementById('enter-btn');
-            const usernameInput = document.getElementById('username-input');
-            const searchInput = document.getElementById('search-input');
-            const searchBtn = document.getElementById('search-btn');
-            const searchIframe = document.getElementById('search-iframe');
-            const greeting = document.getElementById('greeting');
-            const quickLinks = document.querySelectorAll('.quick-link');
-            const logoutLink = document.getElementById('logout-link');
-            const onlineCountSpan = document.getElementById('online-count');
-            const themeToggle = document.getElementById('themeToggle');
-            const newsSection = document.getElementById('newsSection');
-            const aiSection = document.getElementById('aiSection');
-            const newsGrid = document.getElementById('newsGrid');
-            const promptInput = document.getElementById('promptInput');
-            const generateBtn = document.getElementById('generateBtn');
-            const animateBtn = document.getElementById('animateBtn');
-            const generatedImageContainer = document.getElementById('generatedImageContainer');
-            const resultPlaceholder = document.getElementById('resultPlaceholder');
+        // Элементы
+        const welcomeBlock = document.getElementById('welcome-block');
+        const nameBlock = document.getElementById('name-block');
+        const searchBlock = document.getElementById('search-block');
+        const adminBlock = document.getElementById('admin-block');
+        const nextBtn = document.getElementById('next-btn');
+        const enterBtn = document.getElementById('enter-btn');
+        const usernameInput = document.getElementById('username-input');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const searchIframe = document.getElementById('search-iframe');
+        const greeting = document.getElementById('greeting');
+        const quickLinks = document.querySelectorAll('.quick-link');
+        const logoutLink = document.getElementById('logout-link');
+        const onlineCountSpan = document.getElementById('online-count');
+        const themeToggle = document.getElementById('themeToggle');
+        const newsGrid = document.getElementById('newsGrid');
+        const promptInput = document.getElementById('promptInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const animateBtn = document.getElementById('animateBtn');
+        const generatedImageContainer = document.getElementById('generatedImageContainer');
+        const resultPlaceholder = document.getElementById('resultPlaceholder');
 
-            // Админские элементы
-            const adminGreeting = document.getElementById('admin-greeting');
-            const adminOnlineCountSpan = document.getElementById('admin-online-count');
-            const adminOnlineList = document.getElementById('admin-online-list');
-            const adminHistoryList = document.getElementById('admin-history-list');
-            const adminClickStats = document.getElementById('admin-click-stats');
-            const adminHourlyStats = document.getElementById('admin-hourly-stats');
-            const allUsersList = document.getElementById('all-users-list');
-            const totalStats = document.getElementById('total-stats');
-            const adminSearchInput = document.getElementById('admin-search-input');
-            const adminSearchBtn = document.getElementById('admin-search-btn');
-            const adminIframe = document.getElementById('admin-iframe');
-            const adminLogoutLink = document.getElementById('admin-logout-link');
-            const adminCounter = document.getElementById('adminCounter');
+        // Админские элементы
+        const adminGreeting = document.getElementById('admin-greeting');
+        const adminOnlineCountSpan = document.getElementById('admin-online-count');
+        const adminOnlineList = document.getElementById('admin-online-list');
+        const adminHistoryList = document.getElementById('admin-history-list');
+        const adminClickStats = document.getElementById('admin-click-stats');
+        const adminHourlyStats = document.getElementById('admin-hourly-stats');
+        const adminSearchInput = document.getElementById('admin-search-input');
+        const adminSearchBtn = document.getElementById('admin-search-btn');
+        const adminIframe = document.getElementById('admin-iframe');
+        const adminLogoutLink = document.getElementById('admin-logout-link');
 
-            // Элементы обычных настроек
-            const settingsButton = document.getElementById('settingsButton');
-            const settingsPanel = document.getElementById('settingsPanel');
-            const settingsClose = document.getElementById('settingsClose');
-            const userTheme = document.getElementById('user-theme');
-            const fontSize = document.getElementById('font-size');
-            const userSound = document.getElementById('user-sound');
-            const userPopup = document.getElementById('user-popup');
-            const searchEngine = document.getElementById('search-engine');
-            const saveSearchHistory = document.getElementById('save-search-history');
-            const showNews = document.getElementById('show-news');
-            const showAi = document.getElementById('show-ai');
-            const hideNameOnline = document.getElementById('hide-name-online');
-            const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        // Настройки
+        const settingsButton = document.getElementById('settingsButton');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsClose = document.getElementById('settingsClose');
+        const userTheme = document.getElementById('user-theme');
+        const fontSize = document.getElementById('font-size');
+        const userSound = document.getElementById('user-sound');
+        const userPopup = document.getElementById('user-popup');
+        const searchEngine = document.getElementById('search-engine');
+        const saveSearchHistory = document.getElementById('save-search-history');
+        const showNews = document.getElementById('show-news');
+        const showAi = document.getElementById('show-ai');
+        const hideNameOnline = document.getElementById('hide-name-online');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 
-            // Элементы админских настроек
-            const adminSettingsButton = document.getElementById('adminSettingsButton');
-            const adminSettingsPanel = document.getElementById('adminSettingsPanel');
-            const adminSettingsClose = document.getElementById('adminSettingsClose');
-            const clearAllUsers = document.getElementById('clearAllUsers');
-            const clearSearchHistory = document.getElementById('clearSearchHistory');
-            const clearClickStats = document.getElementById('clearClickStats');
-            const clearAllData = document.getElementById('clearAllData');
-            const maintenanceMode = document.getElementById('maintenance-mode');
-            const saveAdminSettingsBtn = document.getElementById('saveAdminSettingsBtn');
+        const adminSettingsButton = document.getElementById('adminSettingsButton');
+        const adminSettingsPanel = document.getElementById('adminSettingsPanel');
+        const adminSettingsClose = document.getElementById('adminSettingsClose');
+        const clearAllUsers = document.getElementById('clearAllUsers');
+        const clearSearchHistory = document.getElementById('clearSearchHistory');
+        const clearClickStats = document.getElementById('clearClickStats');
+        const clearAllData = document.getElementById('clearAllData');
+        const maintenanceCheckbox = document.getElementById('maintenance-mode');
+        const applyMaintenanceBtn = document.getElementById('applyMaintenanceBtn');
+        const saveAdminSettingsBtn = document.getElementById('saveAdminSettingsBtn');
 
-            // Вкладки админки
-            const adminTabs = document.querySelectorAll('.admin-tab');
-            const tabContents = document.querySelectorAll('.admin-tab-content');
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const tabContents = document.querySelectorAll('.admin-tab-content');
 
-            // Текущий пользователь
-            let currentUser = null;
-            let pingInterval = null;
-            let currentImageUrl = null;
-            let userSettings = {};
+        const maintenancePage = document.getElementById('maintenance-page');
 
-            // Загрузка настроек пользователя
-            function loadUserSettings(username) {
-                const saved = localStorage.getItem(STORAGE_KEYS.USER_SETTINGS + username);
-                if (saved) {
-                    userSettings = JSON.parse(saved);
+        let currentUser = null;
+        let pingInterval = null;
+        let currentImageUrl = null;
+        let userSettings = {};
+
+        function checkMaintenanceMode() {
+            const isMaintenance = localStorage.getItem(STORAGE_KEYS.MAINTENANCE) === 'true';
+            if (isMaintenance) {
+                const savedName = localStorage.getItem('krugle_user');
+                if (!savedName || !ADMIN_NAMES.includes(savedName)) {
+                    document.querySelector('.container').style.display = 'none';
+                    maintenancePage.classList.add('show');
+                    welcomeBlock.classList.add('hidden');
+                    nameBlock.classList.add('hidden');
+                    searchBlock.classList.add('hidden');
+                    adminBlock.classList.add('hidden');
                 } else {
-                    userSettings = {
-                        theme: 'system',
-                        fontSize: 'medium',
-                        sound: true,
-                        popup: true,
-                        searchEngine: 'google',
-                        saveHistory: true,
-                        showNews: true,
-                        showAi: true,
-                        hideName: false
-                    };
+                    document.querySelector('.container').style.display = 'block';
+                    maintenancePage.classList.remove('show');
                 }
-                applyUserSettings();
-                // Заполняем форму
-                if (userTheme) userTheme.value = userSettings.theme;
-                if (fontSize) fontSize.value = userSettings.fontSize;
-                if (userSound) userSound.checked = userSettings.sound;
-                if (userPopup) userPopup.checked = userSettings.popup;
-                if (searchEngine) searchEngine.value = userSettings.searchEngine;
-                if (saveSearchHistory) saveSearchHistory.checked = userSettings.saveHistory;
-                if (showNews) showNews.checked = userSettings.showNews;
-                if (showAi) showAi.checked = userSettings.showAi;
-                if (hideNameOnline) hideNameOnline.checked = userSettings.hideName;
+            } else {
+                document.querySelector('.container').style.display = 'block';
+                maintenancePage.classList.remove('show');
             }
+        }
 
-            function saveUserSettings() {
-                userSettings = {
-                    theme: userTheme ? userTheme.value : 'system',
-                    fontSize: fontSize ? fontSize.value : 'medium',
-                    sound: userSound ? userSound.checked : true,
-                    popup: userPopup ? userPopup.checked : true,
-                    searchEngine: searchEngine ? searchEngine.value : 'google',
-                    saveHistory: saveSearchHistory ? saveSearchHistory.checked : true,
-                    showNews: showNews ? showNews.checked : true,
-                    showAi: showAi ? showAi.checked : true,
-                    hideName: hideNameOnline ? hideNameOnline.checked : false
-                };
-                if (currentUser) {
-                    localStorage.setItem(STORAGE_KEYS.USER_SETTINGS + currentUser, JSON.stringify(userSettings));
+        function loadUserSettings(username) {
+            const saved = localStorage.getItem(STORAGE_KEYS.USER_SETTINGS + username);
+            if (saved) userSettings = JSON.parse(saved);
+            else userSettings = { theme: 'system', fontSize: 'medium', sound: true, popup: true, searchEngine: 'google', saveHistory: true, showNews: true, showAi: true, hideName: false };
+            if (userTheme) userTheme.value = userSettings.theme;
+            if (fontSize) fontSize.value = userSettings.fontSize;
+            if (userSound) userSound.checked = userSettings.sound;
+            if (userPopup) userPopup.checked = userSettings.popup;
+            if (searchEngine) searchEngine.value = userSettings.searchEngine;
+            if (saveSearchHistory) saveSearchHistory.checked = userSettings.saveHistory;
+            if (showNews) showNews.checked = userSettings.showNews;
+            if (showAi) showAi.checked = userSettings.showAi;
+            if (hideNameOnline) hideNameOnline.checked = userSettings.hideName;
+        }
+        function saveUserSettings() {
+            userSettings = {
+                theme: userTheme.value, fontSize: fontSize.value, sound: userSound.checked,
+                popup: userPopup.checked, searchEngine: searchEngine.value,
+                saveHistory: saveSearchHistory.checked, showNews: showNews.checked,
+                showAi: showAi.checked, hideName: hideNameOnline.checked
+            };
+            if (currentUser) localStorage.setItem(STORAGE_KEYS.USER_SETTINGS + currentUser, JSON.stringify(userSettings));
+            applyUserSettings();
+            settingsPanel.classList.remove('show');
+        }
+        function applyUserSettings() {
+            if (userSettings.theme === 'dark') document.body.classList.add('dark');
+            else if (userSettings.theme === 'light') document.body.classList.remove('dark');
+            else {
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (isDark) document.body.classList.add('dark'); else document.body.classList.remove('dark');
+            }
+            const root = document.documentElement;
+            root.style.fontSize = userSettings.fontSize === 'small' ? '14px' : userSettings.fontSize === 'medium' ? '16px' : '18px';
+            document.getElementById('newsSection').style.display = userSettings.showNews ? 'block' : 'none';
+            document.getElementById('aiSection').style.display = userSettings.showAi ? 'block' : 'none';
+        }
+
+        const savedName = localStorage.getItem('krugle_user');
+        if (savedName) {
+            if (ADMIN_NAMES.includes(savedName)) showAdmin(savedName);
+            else showSearch(savedName);
+        } else showWelcome();
+
+        function showWelcome() {
+            welcomeBlock.classList.remove('hidden'); nameBlock.classList.add('hidden'); searchBlock.classList.add('hidden'); adminBlock.classList.add('hidden');
+            settingsButton.style.display = 'none'; leave(); checkMaintenanceMode();
+        }
+        function showNameInput() {
+            welcomeBlock.classList.add('hidden'); nameBlock.classList.remove('hidden'); searchBlock.classList.add('hidden'); adminBlock.classList.add('hidden');
+            settingsButton.style.display = 'none'; usernameInput.focus();
+        }
+        function showSearch(name) {
+            welcomeBlock.classList.add('hidden'); nameBlock.classList.add('hidden'); searchBlock.classList.remove('hidden'); adminBlock.classList.add('hidden');
+            settingsButton.style.display = 'block';
+            greeting.innerHTML = `С возвращением, <span>${name}</span>!`;
+            searchInput.focus(); searchIframe.src = 'about:blank';
+            join(name); loadUserSettings(name); loadNews();
+        }
+        function showAdmin(name) {
+            welcomeBlock.classList.add('hidden'); nameBlock.classList.add('hidden'); searchBlock.classList.add('hidden'); adminBlock.classList.remove('hidden');
+            settingsButton.style.display = 'none';
+            adminGreeting.innerHTML = `С возвращением, <span>${name}</span>!`;
+            adminSearchInput.focus(); adminIframe.src = 'about:blank';
+            join(name); renderAdminFeatures();
+        }
+
+        function join(name) {
+            if (currentUser) leave();
+            currentUser = name;
+            updateUser(name);
+            if (pingInterval) clearInterval(pingInterval);
+            pingInterval = setInterval(() => { if (currentUser) updateUser(currentUser); }, 10000);
+            updateHourly(new Date().getHours());
+        }
+        function leave() {
+            if (currentUser) { removeUser(currentUser); currentUser = null; }
+            if (pingInterval) { clearInterval(pingInterval); pingInterval = null; }
+        }
+
+        nextBtn.addEventListener('click', showNameInput);
+        enterBtn.addEventListener('click', () => {
+            const name = usernameInput.value.trim();
+            if (name) {
+                if (localStorage.getItem(STORAGE_KEYS.MAINTENANCE) === 'true' && !ADMIN_NAMES.includes(name)) {
+                    alert('🔧 Сайт на обслуживании'); return;
                 }
-                applyUserSettings();
-                settingsPanel.classList.remove('show');
-            }
+                localStorage.setItem('krugle_user', name);
+                if (ADMIN_NAMES.includes(name)) showAdmin(name); else showSearch(name);
+            } else alert('Введите имя');
+        });
+        usernameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') enterBtn.click(); });
 
-            function applyUserSettings() {
-                // Тема
-                if (userSettings.theme === 'dark') document.body.classList.add('dark');
-                else if (userSettings.theme === 'light') document.body.classList.remove('dark');
-                else {
-                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (isDark) document.body.classList.add('dark');
-                    else document.body.classList.remove('dark');
-                }
-                // Размер шрифта
-                const root = document.documentElement;
-                if (userSettings.fontSize === 'small') root.style.fontSize = '14px';
-                else if (userSettings.fontSize === 'medium') root.style.fontSize = '16px';
-                else if (userSettings.fontSize === 'large') root.style.fontSize = '18px';
-                // Показ новостей и нейросети
-                if (newsSection) newsSection.style.display = userSettings.showNews ? 'block' : 'none';
-                if (aiSection) aiSection.style.display = userSettings.showAi ? 'block' : 'none';
-            }
+        function searchInIframe(iframe, query) {
+            if (!query.trim()) return;
+            let searchUrl = userSettings.searchEngine === 'yandex' ? 'https://yandex.ru/search/?text=' + encodeURIComponent(query) :
+                            userSettings.searchEngine === 'duckduckgo' ? 'https://duckduckgo.com/?q=' + encodeURIComponent(query) :
+                            'https://www.google.com/search?q=' + encodeURIComponent(query);
+            iframe.src = searchUrl;
+            if (currentUser && userSettings.saveHistory) addSearchHistory({ name: currentUser, query, time: new Date().toLocaleTimeString() });
+        }
 
-            // Проверка сохранённого имени
-            const savedName = localStorage.getItem('krugle_user');
-            if (savedName) {
-                if (ADMIN_NAMES.includes(savedName)) showAdmin(savedName);
-                else showSearch(savedName);
-            } else showWelcome();
+        searchBtn.addEventListener('click', () => searchInIframe(searchIframe, searchInput.value));
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchInIframe(searchIframe, searchInput.value); });
+        adminSearchBtn.addEventListener('click', () => searchInIframe(adminIframe, adminSearchInput.value));
+        adminSearchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchInIframe(adminIframe, adminSearchInput.value); });
 
-            function showWelcome() {
-                welcomeBlock.classList.remove('hidden');
-                nameBlock.classList.add('hidden');
-                searchBlock.classList.add('hidden');
-                adminBlock.classList.add('hidden');
-                settingsButton.style.display = 'none';
-                welcomeBlock.classList.add('fade-slide-in');
-                leave();
-            }
-            function showNameInput() {
-                welcomeBlock.classList.add('hidden');
-                nameBlock.classList.remove('hidden');
-                searchBlock.classList.add('hidden');
-                adminBlock.classList.add('hidden');
-                settingsButton.style.display = 'none';
-                nameBlock.classList.add('fade-slide-in');
-                usernameInput.focus();
-            }
-            function showSearch(name) {
-                welcomeBlock.classList.add('hidden');
-                nameBlock.classList.add('hidden');
-                searchBlock.classList.remove('hidden');
-                adminBlock.classList.add('hidden');
-                settingsButton.style.display = 'block';
-                greeting.innerHTML = `С возвращением, <span>${name}</span>!`;
-                searchInput.focus();
-                searchIframe.src = 'about:blank';
-                join(name);
-                loadUserSettings(name);
-                loadNews();
-            }
-            function showAdmin(name) {
-                welcomeBlock.classList.add('hidden');
-                nameBlock.classList.add('hidden');
-                searchBlock.classList.add('hidden');
-                adminBlock.classList.remove('hidden');
-                settingsButton.style.display = 'none';
-                adminGreeting.innerHTML = `С возвращением, <span>${name}</span>!`;
-                adminSearchInput.focus();
-                adminIframe.src = 'about:blank';
-                join(name);
+        quickLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const query = this.dataset.query;
+                if (!query) return;
+                if (this.innerText.includes('Погода')) incrementClickStat('погода');
+                else if (this.innerText.includes('Еда')) incrementClickStat('еда');
+                else if (this.innerText.includes('Майнкрафт')) incrementClickStat('майнкрафт');
+                if (!adminBlock.classList.contains('hidden')) searchInIframe(adminIframe, query);
+                else searchInIframe(searchIframe, query);
+            });
+        });
+
+        logoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('krugle_user'); leave(); showWelcome(); });
+        adminLogoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('krugle_user'); leave(); showWelcome(); });
+
+        settingsButton.addEventListener('click', () => { loadUserSettings(currentUser); settingsPanel.classList.add('show'); });
+        settingsClose.addEventListener('click', () => settingsPanel.classList.remove('show'));
+        saveSettingsBtn.addEventListener('click', saveUserSettings);
+
+        if (adminSettingsButton) {
+            adminSettingsButton.addEventListener('click', () => {
+                if (maintenanceCheckbox) maintenanceCheckbox.checked = localStorage.getItem(STORAGE_KEYS.MAINTENANCE) === 'true';
+                adminSettingsPanel.classList.add('show');
+            });
+        }
+        adminSettingsClose.addEventListener('click', () => adminSettingsPanel.classList.remove('show'));
+        clearAllUsers.addEventListener('click', () => { localStorage.setItem(STORAGE_KEYS.USERS, '{}'); renderAdminFeatures(); adminSettingsPanel.classList.remove('show'); });
+        clearSearchHistory.addEventListener('click', () => { localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]'); renderAdminFeatures(); adminSettingsPanel.classList.remove('show'); });
+        clearClickStats.addEventListener('click', () => { localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 })); renderAdminFeatures(); adminSettingsPanel.classList.remove('show'); });
+        clearAllData.addEventListener('click', () => {
+            localStorage.setItem(STORAGE_KEYS.USERS, '{}');
+            localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
+            localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
+            localStorage.setItem(STORAGE_KEYS.ACTIONS, '[]');
+            localStorage.setItem(STORAGE_KEYS.HOURLY, '{}');
+            renderAdminFeatures();
+            adminSettingsPanel.classList.remove('show');
+        });
+        saveAdminSettingsBtn.addEventListener('click', () => adminSettingsPanel.classList.remove('show'));
+
+        applyMaintenanceBtn.addEventListener('click', () => {
+            localStorage.setItem(STORAGE_KEYS.MAINTENANCE, maintenanceCheckbox.checked);
+            alert(maintenanceCheckbox.checked ? 'Режим обслуживания ВКЛЮЧЕН' : 'Режим обслуживания ВЫКЛЮЧЕН');
+            checkMaintenanceMode();
+        });
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            themeToggle.textContent = document.body.classList.contains('dark') ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+        });
+
+        async function loadNews() {
+            try {
+                const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss?hl=ru&gl=RU&ceid=RU:ru');
+                const data = await response.json();
+                if (data.items && data.items.length > 0) {
+                    let html = '';
+                    data.items.slice(0, 6).forEach(item => {
+                        html += `<div class="news-card" onclick="window.open('${item.link}','_blank')"><h3>${item.title}</h3><p>${item.description?.substring(0,100)||''}...</p><small>${new Date(item.pubDate).toLocaleDateString()}</small></div>`;
+                    });
+                    newsGrid.innerHTML = html;
+                } else newsGrid.innerHTML = 'Не удалось загрузить новости';
+            } catch { newsGrid.innerHTML = 'Ошибка загрузки новостей'; }
+        }
+
+        async function generateImage(prompt, container, placeholder) {
+            if (!prompt) return;
+            placeholder.innerHTML = '<div class="loader"></div> Генерирую...';
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true`;
+            currentImageUrl = imageUrl;
+            container.innerHTML = `<img src="${imageUrl}" class="ai-image" onload="this.parentElement.nextElementSibling.innerHTML=''">`;
+            placeholder.innerHTML = '';
+        }
+        async function animateImage(prompt, container, placeholder) {
+            if (!currentImageUrl && !prompt) { alert('Сначала создайте изображение'); return; }
+            placeholder.innerHTML = '<div class="loader"></div> Оживляю...';
+            const variationPrompt = (prompt || 'изображение') + ' animated, 4k, high quality';
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(variationPrompt)}?width=512&height=512&nologo=true`;
+            currentImageUrl = imageUrl;
+            container.innerHTML = `<img src="${imageUrl}" class="ai-image" onload="this.parentElement.nextElementSibling.innerHTML=''">`;
+            placeholder.innerHTML = '';
+        }
+        generateBtn.addEventListener('click', () => generateImage(promptInput.value, generatedImageContainer, resultPlaceholder));
+        animateBtn.addEventListener('click', () => animateImage(promptInput.value, generatedImageContainer, resultPlaceholder));
+
+        function renderAdminFeatures() {
+            cleanOfflineUsers();
+            const users = getUsers();
+            const onlineNames = Object.keys(users).filter(n => n !== currentUser);
+            adminOnlineList.innerHTML = onlineNames.length ? onlineNames.map(n => `<li>${n}</li>`).join('') : '<li>🟡 Никого нет</li>';
+            const hist = getSearchHistory();
+            adminHistoryList.innerHTML = hist.length ? hist.slice(0,10).map(i => `<div>${i.time} — ${i.name}: "${i.query}"</div>`).join('') : '<div>История пуста</div>';
+            const stats = getClickStats();
+            adminClickStats.innerHTML = `<div>☀️ Погода: ${stats.погода}</div><div>🍳 Еда: ${stats.еда}</div><div>⛏️ Майнкрафт: ${stats.майнкрафт}</div>`;
+            const hourly = getHourly();
+            let hh = '';
+            for (let h=0; h<24; h++) if (hourly[h]) hh += `<div>${h}:00 — ${hourly[h]} чел.</div>`;
+            adminHourlyStats.innerHTML = hh || '<div>Нет данных</div>';
+            adminOnlineCountSpan.textContent = onlineNames.length;
+            onlineCountSpan.textContent = onlineNames.length;
+        }
+
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                adminTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                tabContents.forEach(c => c.classList.remove('active'));
+                document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+            });
+        });
+
+        setInterval(() => {
+            cleanOfflineUsers();
+            const cnt = Object.keys(getUsers()).length;
+            onlineCountSpan.textContent = cnt;
+            if (!adminBlock.classList.contains('hidden')) {
+                adminOnlineCountSpan.textContent = cnt;
                 renderAdminFeatures();
             }
+        }, 5000);
 
-            function join(name) {
-                if (currentUser) leave();
-                currentUser = name;
-                updateUser(name);
-                if (pingInterval) clearInterval(pingInterval);
-                pingInterval = setInterval(() => {
-                    if (currentUser) updateUser(currentUser);
-                }, 10000);
-                const hour = new Date().getHours();
-                updateHourly(hour);
-            }
-            function leave() {
-                if (currentUser) {
-                    removeUser(currentUser);
-                    currentUser = null;
-                }
-                if (pingInterval) { clearInterval(pingInterval); pingInterval = null; }
-            }
-
-            nextBtn.addEventListener('click', showNameInput);
-            enterBtn.addEventListener('click', () => {
-                const name = usernameInput.value.trim();
-                if (name) {
-                    localStorage.setItem('krugle_user', name);
-                    if (ADMIN_NAMES.includes(name)) showAdmin(name);
-                    else showSearch(name);
-                } else alert('Введите имя');
-            });
-            usernameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') enterBtn.click(); });
-
-            // Поиск с учётом выбранного поисковика
-            function searchInIframe(iframe, query) {
-                if (!query.trim()) return;
-                let searchUrl;
-                switch (userSettings.searchEngine) {
-                    case 'yandex':
-                        searchUrl = 'https://yandex.ru/search/?text=' + encodeURIComponent(query);
-                        break;
-                    case 'duckduckgo':
-                        searchUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(query);
-                        break;
-                    default:
-                        searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-                }
-                iframe.src = searchUrl;
-                if (currentUser && userSettings.saveHistory) {
-                    addSearchHistory({ name: currentUser, query, time: new Date().toLocaleTimeString() });
-                }
-            }
-
-            searchBtn.addEventListener('click', () => searchInIframe(searchIframe, searchInput.value));
-            searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchInIframe(searchIframe, searchInput.value); });
-            adminSearchBtn.addEventListener('click', () => searchInIframe(adminIframe, adminSearchInput.value));
-            adminSearchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchInIframe(adminIframe, adminSearchInput.value); });
-
-            quickLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    const query = this.dataset.query;
-                    if (!query) return;
-                    const text = this.innerText.replace(/[^a-zа-я]/gi, '').toLowerCase();
-                    if (text.includes('погода')) incrementClickStat('погода');
-                    else if (text.includes('еда')) incrementClickStat('еда');
-                    else if (text.includes('майнкрафт')) incrementClickStat('майнкрафт');
-                    if (!adminBlock.classList.contains('hidden')) searchInIframe(adminIframe, query);
-                    else searchInIframe(searchIframe, query);
-                });
-            });
-
-            logoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('krugle_user'); leave(); showWelcome(); });
-            adminLogoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('krugle_user'); leave(); showWelcome(); });
-
-            // Обычные настройки
-            settingsButton.addEventListener('click', () => {
-                loadUserSettings(currentUser);
-                settingsPanel.classList.add('show');
-            });
-            settingsClose.addEventListener('click', () => settingsPanel.classList.remove('show'));
-            saveSettingsBtn.addEventListener('click', saveUserSettings);
-
-            // Админские настройки
-            if (adminSettingsButton) {
-                adminSettingsButton.addEventListener('click', () => {
-                    adminSettingsPanel.classList.add('show');
-                });
-            }
-            if (adminSettingsClose) {
-                adminSettingsClose.addEventListener('click', () => adminSettingsPanel.classList.remove('show'));
-            }
-            if (clearAllUsers) {
-                clearAllUsers.addEventListener('click', () => {
-                    localStorage.setItem(STORAGE_KEYS.USERS, '{}');
-                    renderAdminFeatures();
-                    adminSettingsPanel.classList.remove('show');
-                });
-            }
-            if (clearSearchHistory) {
-                clearSearchHistory.addEventListener('click', () => {
-                    localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
-                    renderAdminFeatures();
-                    adminSettingsPanel.classList.remove('show');
-                });
-            }
-            if (clearClickStats) {
-                clearClickStats.addEventListener('click', () => {
-                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
-                    renderAdminFeatures();
-                    adminSettingsPanel.classList.remove('show');
-                });
-            }
-            if (clearAllData) {
-                clearAllData.addEventListener('click', () => {
-                    localStorage.setItem(STORAGE_KEYS.USERS, '{}');
-                    localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
-                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
-                    localStorage.setItem(STORAGE_KEYS.ACTIONS, '[]');
-                    localStorage.setItem(STORAGE_KEYS.HOURLY, '{}');
-                    renderAdminFeatures();
-                    adminSettingsPanel.classList.remove('show');
-                });
-            }
-            if (saveAdminSettingsBtn) {
-                saveAdminSettingsBtn.addEventListener('click', () => {
-                    adminSettingsPanel.classList.remove('show');
-                });
-            }
-
-            // Тема (глобальная кнопка слева)
-            function toggleTheme() {
-                if (document.body.classList.contains('dark')) {
-                    document.body.classList.remove('dark');
-                    themeToggle.textContent = '🌙 Тёмная тема';
-                } else {
-                    document.body.classList.add('dark');
-                    themeToggle.textContent = '☀️ Светлая тема';
-                }
-            }
-            themeToggle.addEventListener('click', toggleTheme);
-
-            // Новости
-            async function loadNews() {
-                try {
-                    const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss?hl=ru&gl=RU&ceid=RU:ru');
-                    const data = await response.json();
-                    if (data.items && data.items.length > 0) {
-                        let html = '';
-                        data.items.slice(0, 6).forEach(item => {
-                            html += `
-                                <div class="news-card" onclick="window.open('${item.link}', '_blank')">
-                                    <h3>${item.title}</h3>
-                                    <p>${item.description?.substring(0, 100) || ''}...</p>
-                                    <small>${new Date(item.pubDate).toLocaleDateString()}</small>
-                                </div>
-                            `;
-                        });
-                        newsGrid.innerHTML = html;
-                    } else newsGrid.innerHTML = 'Не удалось загрузить новости';
-                } catch (e) {
-                    newsGrid.innerHTML = 'Ошибка загрузки новостей';
-                }
-            }
-
-            // Нейросеть
-            async function generateImage(prompt, container, placeholder) {
-                if (!prompt) return;
-                placeholder.innerHTML = '<div class="loader"></div> Генерирую...';
-                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true`;
-                currentImageUrl = imageUrl;
-                container.innerHTML = `<img src="${imageUrl}" alt="generated" class="ai-image" onload="this.parentElement.nextElementSibling.innerHTML=''">`;
-                placeholder.innerHTML = '';
-            }
-            async function animateImage(prompt, container, placeholder) {
-                if (!currentImageUrl && !prompt) { alert('Сначала создайте изображение'); return; }
-                placeholder.innerHTML = '<div class="loader"></div> Оживляю...';
-                const variationPrompt = (prompt || 'изображение') + ' animated, 4k, high quality';
-                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(variationPrompt)}?width=512&height=512&nologo=true`;
-                currentImageUrl = imageUrl;
-                container.innerHTML = `<img src="${imageUrl}" alt="animated" class="ai-image" onload="this.parentElement.nextElementSibling.innerHTML=''">`;
-                placeholder.innerHTML = '';
-            }
-            generateBtn.addEventListener('click', () => generateImage(promptInput.value, generatedImageContainer, resultPlaceholder));
-            animateBtn.addEventListener('click', () => animateImage(promptInput.value, generatedImageContainer, resultPlaceholder));
-
-            // Админка
-            function renderAdminFeatures() {
-                cleanOfflineUsers();
-                const users = getUsers();
-                const onlineNames = Object.keys(users).filter(n => n !== currentUser);
-                if (adminOnlineList) {
-                    if (onlineNames.length === 0) adminOnlineList.innerHTML = '<li>🟡 Никого нет</li>';
-                    else {
-                        let html = '';
-                        onlineNames.forEach(name => {
-                            html += `<li>${name}</li>`;
-                        });
-                        adminOnlineList.innerHTML = html;
-                    }
-                }
-                const hist = getSearchHistory();
-                if (adminHistoryList) {
-                    if (hist.length === 0) adminHistoryList.innerHTML = '<div>История пуста</div>';
-                    else {
-                        let html = '';
-                        hist.slice(0, 10).forEach(item => {
-                            html += `<div>${item.time} — ${item.name}: "${item.query}"</div>`;
-                        });
-                        adminHistoryList.innerHTML = html;
-                    }
-                }
-                const stats = getClickStats();
-                if (adminClickStats) {
-                    adminClickStats.innerHTML = `
-                        <div>☀️ Погода: ${stats.погода}</div>
-                        <div>🍳 Еда: ${stats.еда}</div>
-                        <div>⛏️ Майнкрафт: ${stats.майнкрафт}</div>
-                    `;
-                }
-                const hourly = getHourly();
-                if (adminHourlyStats) {
-                    let html = '';
-                    for (let h=0; h<24; h++) if (hourly[h]) html += `<div>${h}:00 — ${hourly[h]} чел.</div>`;
-                    adminHourlyStats.innerHTML = html || '<div>Нет данных</div>';
-                }
-                if (adminOnlineCountSpan) adminOnlineCountSpan.textContent = onlineNames.length;
-                if (onlineCountSpan) onlineCountSpan.textContent = onlineNames.length;
-            }
-
-            // Вкладки админки
-            adminTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    adminTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    const tabId = tab.dataset.tab;
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    document.getElementById(`tab-${tabId}`).classList.add('active');
-                });
-            });
-
-            // Периодическое обновление
-            setInterval(() => {
-                cleanOfflineUsers();
-                const cnt = Object.keys(getUsers()).length;
-                if (onlineCountSpan) onlineCountSpan.textContent = cnt;
-                if (adminOnlineCountSpan && !adminBlock.classList.contains('hidden')) {
-                    adminOnlineCountSpan.textContent = cnt;
-                    renderAdminFeatures();
-                }
-            }, 5000);
-        })();
+        checkMaintenanceMode();
     </script>
 </body>
-                </html>
+    </html>

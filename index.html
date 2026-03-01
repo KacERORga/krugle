@@ -47,7 +47,7 @@
             border-color: rgba(255, 215, 0, 0.2);
         }
 
-        /* Кнопка настроек */
+        /* Кнопка настроек для обычных пользователей */
         .settings-button {
             position: absolute;
             top: 20px;
@@ -72,7 +72,7 @@
             color: gold;
         }
 
-        /* Панель настроек (модалка) */
+        /* Панель настроек (модалка) для обычных пользователей */
         .settings-panel {
             position: fixed;
             top: 50%;
@@ -477,6 +477,65 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* Экран приветствия */
+        .welcome-screen, .name-screen {
+            text-align: center;
+            padding: 20px 10px;
+        }
+        .welcome-screen h2 {
+            font-size: 2.4rem;
+            font-weight: 400;
+            color: #1a2b3c;
+            margin-bottom: 20px;
+        }
+        body.dark .welcome-screen h2 {
+            color: gold;
+        }
+        .welcome-screen p {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        body.dark .welcome-screen p {
+            color: #ddd;
+        }
+        .welcome-screen button, .name-screen button {
+            padding: 16px 48px;
+            background: rgba(30, 77, 124, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(30, 77, 124, 0.3);
+            transition: all 0.2s;
+        }
+        .welcome-screen button:hover, .name-screen button:hover {
+            background: rgba(30, 77, 124, 1);
+            transform: scale(1.02);
+        }
+        .name-screen input {
+            width: 100%;
+            max-width: 400px;
+            padding: 18px 24px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            outline: none;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .name-screen input:focus {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 24px rgba(30, 77, 124, 0.2);
+        }
+
         .hidden { display: none !important; }
         .fade-slide-in { animation: fadeSlideIn 0.5s ease forwards; }
         @keyframes fadeSlideIn {
@@ -609,13 +668,24 @@
             background: gold;
             color: #1a2b3c;
         }
+
+        /* Админские настройки */
+        .admin-settings-button {
+            background: gold;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- Кнопка темы (глобальная) -->
     <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
 
-    <!-- Панель настроек для всех пользователей -->
+    <!-- Панель настроек для обычных пользователей -->
     <div class="settings-panel" id="settingsPanel">
         <button class="settings-close" id="settingsClose">&times;</button>
         <h2>⚙️ Настройки</h2>
@@ -691,8 +761,52 @@
         <button id="saveSettingsBtn" style="width:100%; padding:15px; background:gold; border:none; border-radius:40px; font-weight:bold;">Сохранить настройки</button>
     </div>
 
+    <!-- Панель админских настроек (только для KacERORga) -->
+    <div class="settings-panel" id="adminSettingsPanel">
+        <button class="settings-close" id="adminSettingsClose">&times;</button>
+        <h2>⚙️ Админ-настройки</h2>
+        
+        <div class="settings-group">
+            <h3>👥 Управление пользователями</h3>
+            <div class="setting-item">
+                <label>Очистить всех пользователей</label>
+                <button id="clearAllUsers">Очистить</button>
+            </div>
+            <div class="setting-item">
+                <label>Заблокированные IP (демо)</label>
+                <input type="text" placeholder="192.168.1.1">
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <h3>🗑️ Очистка данных</h3>
+            <div class="setting-item">
+                <label>Очистить историю поиска</label>
+                <button id="clearSearchHistory">Очистить</button>
+            </div>
+            <div class="setting-item">
+                <label>Очистить статистику кликов</label>
+                <button id="clearClickStats">Очистить</button>
+            </div>
+            <div class="setting-item">
+                <label>Очистить все данные</label>
+                <button id="clearAllData">Очистить всё</button>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <h3>🔧 Режим обслуживания</h3>
+            <div class="setting-item">
+                <label>Включить режим обслуживания</label>
+                <input type="checkbox" id="maintenance-mode">
+            </div>
+        </div>
+
+        <button id="saveAdminSettingsBtn" style="width:100%; padding:15px; background:gold; border:none; border-radius:40px; font-weight:bold;">Применить</button>
+    </div>
+
     <div class="container" id="app">
-        <!-- Кнопка настроек (видна после входа) -->
+        <!-- Кнопка настроек для обычных пользователей (видна после входа) -->
         <button class="settings-button" id="settingsButton">⚙️ Настройки</button>
 
         <!-- Экран приветствия -->
@@ -770,6 +884,9 @@
                     👑 Онлайн: <span id="admin-online-count">0</span>
                 </div>
             </div>
+
+            <!-- Кнопка админских настроек -->
+            <button class="admin-settings-button" id="adminSettingsButton">⚙️ Админ-настройки</button>
 
             <div class="admin-tabs">
                 <div class="admin-tab active" data-tab="dashboard">📊 Дашборд</div>
@@ -933,7 +1050,7 @@
             const adminLogoutLink = document.getElementById('admin-logout-link');
             const adminCounter = document.getElementById('adminCounter');
 
-            // Элементы настроек
+            // Элементы обычных настроек
             const settingsButton = document.getElementById('settingsButton');
             const settingsPanel = document.getElementById('settingsPanel');
             const settingsClose = document.getElementById('settingsClose');
@@ -947,6 +1064,17 @@
             const showAi = document.getElementById('show-ai');
             const hideNameOnline = document.getElementById('hide-name-online');
             const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+
+            // Элементы админских настроек
+            const adminSettingsButton = document.getElementById('adminSettingsButton');
+            const adminSettingsPanel = document.getElementById('adminSettingsPanel');
+            const adminSettingsClose = document.getElementById('adminSettingsClose');
+            const clearAllUsers = document.getElementById('clearAllUsers');
+            const clearSearchHistory = document.getElementById('clearSearchHistory');
+            const clearClickStats = document.getElementById('clearClickStats');
+            const clearAllData = document.getElementById('clearAllData');
+            const maintenanceMode = document.getElementById('maintenance-mode');
+            const saveAdminSettingsBtn = document.getElementById('saveAdminSettingsBtn');
 
             // Вкладки админки
             const adminTabs = document.querySelectorAll('.admin-tab');
@@ -1070,7 +1198,7 @@
                 nameBlock.classList.add('hidden');
                 searchBlock.classList.add('hidden');
                 adminBlock.classList.remove('hidden');
-                settingsButton.style.display = 'none'; // У админа свои настройки
+                settingsButton.style.display = 'none';
                 adminGreeting.innerHTML = `С возвращением, <span>${name}</span>!`;
                 adminSearchInput.focus();
                 adminIframe.src = 'about:blank';
@@ -1149,13 +1277,60 @@
             logoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('krugle_user'); leave(); showWelcome(); });
             adminLogoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('krugle_user'); leave(); showWelcome(); });
 
-            // Настройки
+            // Обычные настройки
             settingsButton.addEventListener('click', () => {
                 loadUserSettings(currentUser);
                 settingsPanel.classList.add('show');
             });
             settingsClose.addEventListener('click', () => settingsPanel.classList.remove('show'));
             saveSettingsBtn.addEventListener('click', saveUserSettings);
+
+            // Админские настройки
+            if (adminSettingsButton) {
+                adminSettingsButton.addEventListener('click', () => {
+                    adminSettingsPanel.classList.add('show');
+                });
+            }
+            if (adminSettingsClose) {
+                adminSettingsClose.addEventListener('click', () => adminSettingsPanel.classList.remove('show'));
+            }
+            if (clearAllUsers) {
+                clearAllUsers.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_KEYS.USERS, '{}');
+                    renderAdminFeatures();
+                    adminSettingsPanel.classList.remove('show');
+                });
+            }
+            if (clearSearchHistory) {
+                clearSearchHistory.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
+                    renderAdminFeatures();
+                    adminSettingsPanel.classList.remove('show');
+                });
+            }
+            if (clearClickStats) {
+                clearClickStats.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
+                    renderAdminFeatures();
+                    adminSettingsPanel.classList.remove('show');
+                });
+            }
+            if (clearAllData) {
+                clearAllData.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_KEYS.USERS, '{}');
+                    localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, '[]');
+                    localStorage.setItem(STORAGE_KEYS.CLICK_STATS, JSON.stringify({ погода: 0, еда: 0, майнкрафт: 0 }));
+                    localStorage.setItem(STORAGE_KEYS.ACTIONS, '[]');
+                    localStorage.setItem(STORAGE_KEYS.HOURLY, '{}');
+                    renderAdminFeatures();
+                    adminSettingsPanel.classList.remove('show');
+                });
+            }
+            if (saveAdminSettingsBtn) {
+                saveAdminSettingsBtn.addEventListener('click', () => {
+                    adminSettingsPanel.classList.remove('show');
+                });
+            }
 
             // Тема (глобальная кнопка слева)
             function toggleTheme() {
@@ -1281,4 +1456,4 @@
         })();
     </script>
 </body>
-</html>
+                </html>

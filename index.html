@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Krugle — ультимативный</title>
+    <!-- PWA: манифест и мета-теги -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         /* ===== СБРОС ===== */
         * {
@@ -378,7 +382,7 @@
 <body>
     <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
 
-    <!-- Панели настроек (содержимое не сокращаю, но оно есть) -->
+    <!-- Панели настроек -->
     <div class="settings-panel" id="settingsPanel">
         <button class="settings-close" id="settingsClose">&times;</button>
         <h2>⚙️ Настройки</h2>
@@ -521,6 +525,15 @@
             <div class="footer"><a href="#" id="admin-logout-link">🚪 Выйти</a></div>
         </div>
     </div>
+
+    <!-- Регистрация сервис-воркера для PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
 
     <script>
         // ---------- Данные ----------
@@ -883,4 +896,4 @@
         checkMaintenanceMode();
     </script>
 </body>
-    </html>
+                                    </html>

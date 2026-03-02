@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krugle — ультимативный</title>
-    <!-- PWA: манифест и мета-теги -->
+    <title>Kolocrug — ультимативный</title>
+    
+    <!-- Фавиконка для поисковиков -->
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    
+    <!-- Для Apple устройства -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+    
+    <!-- PWA: манифест -->
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <style>
         /* ===== СБРОС ===== */
         * {
@@ -447,7 +456,7 @@
 
         <div id="welcome-block" class="welcome-screen">
             <h2>👋 Привет!</h2>
-            <p>Это <strong>Kroogle-Кругл</strong> —<br>неофициальный браузер от колобанги</p>
+            <p>Это <strong>Kolocrug</strong> —<br>неофициальный браузер</p>
             <button id="next-btn">✨ Далее ✨</button>
         </div>
 
@@ -458,7 +467,7 @@
         </div>
 
         <div id="search-block" class="hidden">
-            <h1>🔍 Krugle</h1>
+            <h1>🔍 Kolocrug</h1>
             <div class="greeting" id="greeting"></div>
             <div class="counter-container"><div class="online-counter">👥 Сейчас на сайте: <span id="online-count">0</span></div></div>
             <div class="search-form">
@@ -498,7 +507,7 @@
         </div>
 
         <div id="admin-block" class="hidden">
-            <h1>👑 Krugle Admin</h1>
+            <h1>👑 Kolocrug Admin</h1>
             <div class="greeting"><span id="admin-greeting"></span><div class="admin-badge">⚡ Админ ⚡</div></div>
             <div class="counter-container"><div class="online-counter">👑 Онлайн: <span id="admin-online-count">0</span></div></div>
             <button class="admin-settings-button" id="adminSettingsButton">⚙️ Админ-настройки</button>
@@ -896,4 +905,4 @@
         checkMaintenanceMode();
     </script>
 </body>
-                                    </html>
+</html>
